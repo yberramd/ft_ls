@@ -73,6 +73,5 @@ int main(int argc, char **argv)
 	printf("Taille: %lld octets\n", file_info.st_size);
 	printf("Date de derniere modification: %.12s\n\n\n", 
 			&ctime(&file_info.st_mtimespec.tv_sec)[4]);
-	printf("%d", S_IFMT);
 	printf("\033[0m");
 }
