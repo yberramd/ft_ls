@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:43:25 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/03 17:36:44 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/03 18:09:47 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct		s_dir
 
 int add_args(char c)
 {
+	/*ls actuel ne gere pas les arguments incorrects*/
 	return( (c == 'R') * ARG_R + 
 			(c == 'r') * ARG_r +
 			(c == 't') * ARG_t +
@@ -55,30 +56,25 @@ char	*file_mode(char *str, int st_mode)
 	return (str);
 }
 
-void	print_info(const char *path)
+int	print_info(const char *path, int attr)
 {
 	struct stat file_info;
 	char modes[10] = "----------";
 
-	stat(path, &file_info);
-	printf("%.10s", file_mode(modes, file_info.st_mode));//Modes
-	printf("  %d", file_info.st_nlink);//Nombre de liens
-	printf(" %s", getpwuid(file_info.st_uid)->pw_name);//propriétaire
-	printf("  %s", getgrgid(file_info.st_gid)->gr_name);//Groupe
-	printf("  %lld", file_info.st_size);//Taille
-	printf(" %.12s", &ctime(&file_info.st_mtimespec.tv_sec)[4]);//Date de la dernière modification
-	printf(" %s\n", path);//Nom
-//	printf("Type: \n");
-}
-
-int single_ls(int attr, const char *path)
-{
-
+	if (stat(path, &file_info))
+		return(printf("ls: %s: No such file or directory\n", path) & 0);
 	if (attr & ARG_l)
-		print_info(path);
-	else
-		printf("%s\n", path);
-	return (0);
+	{
+		printf("%.10s", file_mode(modes, file_info.st_mode));//Modes
+		printf("  %d", file_info.st_nlink);//Nombre de liens
+		printf(" %s", getpwuid(file_info.st_uid)->pw_name);//propriétaire
+		printf("  %s", getgrgid(file_info.st_gid)->gr_name);//Groupe
+		printf("  %lld", file_info.st_size);//Taille
+		printf(" %.12s ", &ctime(&file_info.st_mtimespec.tv_sec)[4]);//Date de la dernière modification
+	}
+	printf("%s\n", path);//Nom
+	//	printf("Type: \n");
+	return (1);
 }
 
 int ls(int attr, const char *path)
@@ -87,7 +83,7 @@ int ls(int attr, const char *path)
 
 	(void)attr;
 	if (!(dir = opendir(path)))
-		return(single_ls(attr, path));
+		return(print_info(path, attr));
 	printf("Fichier ouvert !\n");
 	closedir(dir);
 	return (0);
@@ -109,11 +105,11 @@ int main(int argc, char **argv)
 
 	i = 0;
 	args = 0;
-	if (argc <= 1)
-		return (ls(args, argv[0]));
 	while (++i < argc && argv[i][0] == '-' && !(j = 0))
 		while(argv[i][++j])
 			args = args | add_args(argv[i][j]);
+	if (i == argc)
+		return (ls(args, "."));
 	while (i < argc)
 		ls(args, argv[i++]);
 }
