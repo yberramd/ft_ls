@@ -39,8 +39,16 @@ void print_stat(struct stat *file_info)
 
 char *file_mode(char *str, int st_mode)
 {
-	if (st_mode & S_IFDIR)
-		str[0] = 'd';
+	str[0] = st_mode & S_IFDIR ? 'd' : '-';
+	str[1] = st_mode & S_IRUSR ? 'r' : '-';
+	str[2] = st_mode & S_IWUSR ? 'w' : '-';
+	str[3] = st_mode & S_IXUSR ? 'x' : '-';
+	str[4] = st_mode & S_IRGRP ? 'r' : '-';
+	str[5] = st_mode & S_IWGRP ? 'w' : '-';
+	str[6] = st_mode & S_IXGRP ? 'x' : '-';
+	str[7] = st_mode & S_IROTH ? 'r' : '-';
+	str[8] = st_mode & S_IWOTH ? 'w' : '-';
+	str[9] = st_mode & S_IXOTH ? 'x' : '-';
 	return (str);
 }
 int main(int argc, char **argv)
