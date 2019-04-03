@@ -37,6 +37,12 @@ void print_stat(struct stat *file_info)
 	printf("\033[0m");
 }
 
+char *file_mode(char *str, int st_mode)
+{
+	if (st_mode & S_IFDIR)
+		str[0] = 'd';
+	return (str);
+}
 int main(int argc, char **argv)
 {
 	/*Declaration des variables requises (man 2 stat)*/
@@ -52,12 +58,13 @@ int main(int argc, char **argv)
 	printf("\033[0;32m");
 	printf("Nom: %s\n", argv[1]); 
 	printf("Type: \n"); //TODO
-	printf("Modes: %.10s\n", modes); //TODO
+	printf("Modes: %.10s\n", file_mode(modes, file_info.st_mode)); //TODO
 	printf("Nombre de liens: %d\n", file_info.st_nlink);
 	printf("Proprietaire: %s\n", getpwuid(file_info.st_uid)->pw_name);
 	printf("Groupe: %s\n", getgrgid(file_info.st_gid)->gr_name);
 	printf("Taille: %lld octets\n", file_info.st_size);
 	printf("Date de derniere modification: %.12s\n\n\n", 
 			&ctime(&file_info.st_mtimespec.tv_sec)[4]);
+	printf("%d", S_IFMT);
 	printf("\033[0m");
 }
