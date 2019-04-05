@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:51:34 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/05 15:16:31 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/05 15:57:40 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,10 @@ int	print_info(const char *path, int attr)
 	return (1);
 }
 
-int	print_info_list(const char *path, int attr, t_dir *list)
+int	print_info_list(int attr, t_dir *list)
 {
 	char modes[10] = "----------";
 
-	(void)path;
 	if (attr & ARG_l)
 		while (list)
 		{
@@ -66,7 +65,12 @@ int	print_info_list(const char *path, int attr, t_dir *list)
 			printf("%s\n", list->d_name);//Nom
 			list = list->next;
 		}
-	//printf("%s\n", path);//Nom
+	else
+		while (list)
+		{
+			printf("%s\n", list->d_name);//Nom
+			list = list->next;
+		}
 	//	printf("Type: \n");
 	return (1);
 }
