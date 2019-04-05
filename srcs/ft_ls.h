@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 16:01:05 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/04 16:22:10 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/05 11:07:31 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int cmp(int attr, t_dir *elem1, t_dir *elem2);
 int sort(int attr, t_dir *list);
 
 //ls.c
-t_dir *create_list(t_dir *first, t_dir *previous, DIR *dir);
+t_dir *create_list(int attr, t_dir *first, t_dir *previous, DIR *dir);
 void show_list(t_dir *list); //DEBUG.
 void stat_my_list(const char *path, t_dir *list); //Requires libft
 int ls(int attr, const char *path);

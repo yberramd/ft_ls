@@ -6,13 +6,13 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:43:25 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/04 16:56:29 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/05 11:28:39 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-t_dir *create_list(t_dir *first, t_dir *previous, DIR *dir)
+t_dir *create_list(int attr, t_dir *first, t_dir *previous, DIR *dir)
 {
 	t_dir *current;
 	struct dirent *dirent;
@@ -21,14 +21,17 @@ t_dir *create_list(t_dir *first, t_dir *previous, DIR *dir)
 	   if (!(current = malloc(sizeof(t_dir))))
 		exit(printf("Failed Malloc") * 0 - 1);
 	if (!dirent)
-		return(first);
+		return(attr & ARG_r ? previous : first);
 	current->dirent = dirent;
 	current->file_info = NULL;
-	if (previous)
+	current->next = NULL;
+	if (attr & ARG_r && previous)
+		current->next = previous;
+	else if (previous)
 		previous->next = current;
 	else
 		first = current;
-	return(create_list(first, current, dir));
+	return(create_list(attr, first, current, dir));
 }
 
 
@@ -38,7 +41,7 @@ void show_list(t_dir *list) //DEBUG.
 	printf("%s\n", list->dirent->d_name);
 	while ((list = list->next))
 		printf("%s\n", list->dirent->d_name);
-	printf("\033[0m");
+	//printf("\033[0m");
 }
 
 void stat_my_list(const char *path, t_dir *list) //Requires libft
@@ -63,12 +66,12 @@ int ls(int attr, const char *path)
 	(void)attr;
 	if (!(dir = opendir(path)))
 		return(print_info(path, attr));
-	list = create_list(NULL, NULL, dir);
+	list = create_list(attr, NULL, NULL, dir);
 	closedir(dir);
 	stat_my_list(path, list);
 	while (sort(attr, list))
 		(void)list;
-	printf("\033[0;32m");
+	//printf("\033[0;32m");
 	show_list(list);
 	return (0);
 }
