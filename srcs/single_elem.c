@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:51:34 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/04 16:50:46 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/05 11:36:57 by yberramd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,24 @@ int	print_info(const char *path, int attr)
 		printf("  %s", getgrgid(file_info.st_gid)->gr_name);//Groupe
 		printf("  %lld", file_info.st_size);//Taille
 		printf(" %.12s ", &ctime(&file_info.st_mtimespec.tv_sec)[4]);//Date de la dernière modification
+	}
+	printf("%s\n", path);//Nom
+	//	printf("Type: \n");
+	return (1);
+}
+
+int	print_info_list(const char *path, int attr, t_dir *list)
+{
+	char modes[10] = "----------";
+
+	if (attr & ARG_l)
+	{
+		printf("%.10s", file_mode(modes, list->file_info->st_mode));//Modes
+		printf("  %d", list->file_info->st_nlink);//Nombre de liens
+		printf(" %s", getpwuid(list->file_info->st_uid)->pw_name);//propriétaire
+		printf("  %s", getgrgid(list->file_info->st_gid)->gr_name);//Groupe
+		printf("  %lld", list->file_info->st_size);//Taille
+		printf(" %.12s ", &ctime(&list->file_info->st_mtimespec.tv_sec)[4]);//Date de la dernière modification
 	}
 	printf("%s\n", path);//Nom
 	//	printf("Type: \n");
