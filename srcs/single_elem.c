@@ -6,14 +6,14 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:51:34 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/05 15:57:40 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/07 16:32:01 by yberramd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 #include "../libft/libft.h"
 
-char	*file_mode(char *str, int st_mode)
+char		*file_mode(char *str, int st_mode)
 {
 	str[0] = st_mode & S_IFDIR ? 'd' : '-';
 	str[1] = st_mode & S_IRUSR ? 'r' : '-';
@@ -28,7 +28,7 @@ char	*file_mode(char *str, int st_mode)
 	return (str);
 }
 
-int	print_info(const char *path, int attr)
+int			print_info(const char *path, int attr)
 {
 	struct stat file_info;
 	char modes[10] = "----------";
@@ -49,22 +49,41 @@ int	print_info(const char *path, int attr)
 	return (1);
 }
 
-int	print_info_list(int attr, t_dir *list)
+int			print_info_list(int attr, t_dir *list)
 {
-	char modes[10] = "----------";
+	char			modes[10] = "----------";
+	long long int	total;
+	t_dir			*tmp;
 
+	tmp = list;
+	total = 0;
 	if (attr & ARG_l)
+	{
 		while (list)
 		{
-			printf("%.10s", file_mode(modes, list->file_info->st_mode));//Modes
-			printf("  %d", list->file_info->st_nlink);//Nombre de liens
-			printf(" %s", getpwuid(list->file_info->st_uid)->pw_name);//propriétaire
-			printf("  %s", getgrgid(list->file_info->st_gid)->gr_name);//Groupe
-			printf("  %lld", list->file_info->st_size);//Taille
-			printf(" %.12s ", &ctime(&list->file_info->st_mtimespec.tv_sec)[4]);//Date de la dernière modification
-			printf("%s\n", list->d_name);//Nom
+			total += list->file_info->st_blocks;
+	//		printf("  %d", tmp->file_info->st_nlink);//Nombre de liens
+	//		printf(" %s", getpwuid(list->file_info->st_uid)->pw_name);//propriétaire
+	//		printf(" %s", getgrgid(list->file_info->st_gid)->gr_name);//Groupe
+	//		printf(" %lld", list->file_info->st_size);//Taille
+	//		printf(" %.12s ", &ctime(&list->file_info->st_mtimespec.tv_sec)[4]);//Date de la dernière modification
 			list = list->next;
 		}
+		printf("total %lld\n", total);//Nombre de liens
+		while (tmp)
+		{
+			printf("%.10s", file_mode(modes, tmp->file_info->st_mode));//Modes
+			printf("  %d", tmp->file_info->st_nlink);//Nombre de liens
+			getpwuid(tmp->file_info->st_uid) == NULL
+			? printf(" %ld", (long)tmp->file_info->st_uid)
+			: printf(" %s", getpwuid(tmp->file_info->st_uid)->pw_name);//propriétaire
+			printf("  %s", getgrgid(tmp->file_info->st_gid)->gr_name);//Groupe
+			printf("  %lld", tmp->file_info->st_size);//Taille
+			printf(" %.12s ", &ctime(&tmp->file_info->st_mtimespec.tv_sec)[4]);//Date de la dernière modification PB: ls -l sur Documents "2018"
+			printf("%s\n", tmp->d_name);//Nom
+			tmp = tmp->next;
+		}
+	}
 	else
 		while (list)
 		{

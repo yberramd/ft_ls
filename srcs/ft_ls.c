@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:43:25 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/05 16:03:54 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/07 16:32:05 by yberramd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 #include "../libft/libft.h"
 
 
-//ls -l "total nb"
-//-R
-//recherche liens symboliques, lstat et pourquoi ./ft_ls -l /etc segfault
+//ls -l "total nb" [CHECK]
+//-R [CHECK]
+//recherche liens symboliques, lstat et pourquoi ./ft_ls -l /etc segfault [CHECK]
 //gestion d'erreurs, debug
 //ft_ls ne gere pas les arguments invalides (exemple ./ft_ls -x)
 //ft_ls ne gere pas les path invalides (exemple ./ft_ls )
@@ -64,10 +64,10 @@ void stat_my_list(const char *path, t_dir *list) //
 
 int ls(int attr, const char *path)
 {
-	DIR *dir;
-	t_dir *list;
+	DIR		*dir;
+	t_dir	*list;
+	char	*next_dir;
 
-	(void)attr;
 	if (!(dir = opendir(path)))
 		return(print_info(path, attr));
 	list = create_list(attr, NULL, NULL, dir);
@@ -75,9 +75,18 @@ int ls(int attr, const char *path)
 	stat_my_list(path, list);
 	while (sort(attr, list))
 		(void)list;
-	printf("\033[0;32m");
 	print_info_list(attr, list);
-	printf("\033[0m");
+	while (list)
+	{
+		if (list->file_info->st_mode & S_IFDIR)
+		{
+			next_dir = ft_strjoinfree(ft_strjoin(path, "/"), list->d_name);
+			printf ("%s:\n", next_dir);
+			ls(attr, next_dir);
+			ft_strdel(&next_dir);//peut leaks
+		}
+		list = list->next;
+	}
 	return (0);
 }
 
