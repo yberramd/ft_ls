@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:51:34 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/08 15:08:31 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/08 15:29:11 by yberramd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,10 +137,10 @@ int			print_info_list(int attr, t_dir *list)
 						printf(" ");
 				printf(" %s", getpwuid(list->file_info->st_uid)->pw_name);//propriétaire
 			}
+			printf("  %s", getgrgid(list->file_info->st_gid)->gr_name);//Groupe
 			if ((biggest = max.grp) > (lower = ft_strlen(getgrgid(list->file_info->st_gid)->gr_name)))
 				while (lower++ < biggest)
 					printf(" ");
-			printf("  %s", getgrgid(list->file_info->st_gid)->gr_name);//Groupe
 			if ((biggest = ft_index(max.size)) > (lower = ft_index(list->file_info->st_size)))
 				while (lower++ < biggest)
 					printf(" ");
