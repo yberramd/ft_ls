@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:43:25 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/07 16:32:05 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/08 11:18:45 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int ls(int attr, const char *path)
 	while (sort(attr, list))
 		(void)list;
 	print_info_list(attr, list);
-	while (list)
+	while (list && attr & ARG_R)
 	{
 		if (list->file_info->st_mode & S_IFDIR)
 		{
