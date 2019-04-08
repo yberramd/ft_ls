@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:43:25 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/08 11:22:20 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/08 13:46:47 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,9 @@ t_dir *create_list(int attr, t_dir *first, t_dir *previous, DIR *dir)
 	return(create_list(attr, first, current, dir));
 }
 
-void stat_my_list(const char *path, t_dir *list) //
+int		stat_my_list(const char *path, t_dir *list) //
 {
+	int i;
 	char *newpath;
 
 	while (list)
@@ -56,10 +57,11 @@ void stat_my_list(const char *path, t_dir *list) //
 		list->file_info = malloc(sizeof(struct stat));
 		newpath = ft_strjoin(path, "/");
 		newpath = ft_strjoin(newpath, list->d_name); // NEWPATH LEAK ICI CONNARD
-		stat(newpath, list->file_info);
+		i = lstat(newpath, list->file_info);
 		free(newpath);
-		list = list->next;
+		list = list->next; // CETTE FONCTION C'EST LA FETE DU LEAK
 	}
+	return (!i);
 }
 
 int ls(int attr, const char *path)
@@ -72,18 +74,20 @@ int ls(int attr, const char *path)
 		return(print_info(path, attr));
 	list = create_list(attr, NULL, NULL, dir);
 	closedir(dir);
-	stat_my_list(path, list);
-	while (sort(attr, list))
-		(void)list;
+	if (!stat_my_list(path, list))
+		return(0);
+	if (list)
+		while (sort(attr, list))
+			(void)list;
 	print_info_list(attr, list);
 	while (list && attr & ARG_R)
 	{
 		if (list->file_info->st_mode & S_IFDIR)
 		{
-			next_dir = ft_strjoinfree(path[0] == '/' && !path[1] ? ft_strdup(path) : ft_strjoin(path, "/"), list->d_name);
-			printf ("%s:\n", next_dir);
+			next_dir = ft_strjoinfree(path[0] == '/' && !path[1] ? ft_strdup(path) : ft_strjoin(path, "/"), ft_strdup(list->d_name)); //LA FETE DU LEAK JTE DIS
+			printf ("\n%s:\n", next_dir);
 			ls(attr, next_dir);
-			ft_strdel(&next_dir);//peut leaks
+			ft_strdel(&next_dir);//LEAKS ?
 		}
 		list = list->next;
 	}

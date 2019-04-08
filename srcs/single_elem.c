@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:51:34 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/07 16:32:01 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/08 13:50:16 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,10 @@ int			print_info(const char *path, int attr)
 	struct stat file_info;
 	char modes[10] = "----------";
 
-	if (stat(path, &file_info))
+	if (lstat(path, &file_info))
 		return(printf("ls: %s: No such file or directory\n", path) & 0);
+	if (file_info.st_mode & S_IFDIR)
+		return(printf("ls: %s: Permission denied\n", path) & 0);
 	if (attr & ARG_l)
 	{
 		printf("%.10s", file_mode(modes, file_info.st_mode));//Modes
