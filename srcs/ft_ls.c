@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:43:25 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/08 11:18:45 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/08 11:22:20 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int ls(int attr, const char *path)
 	{
 		if (list->file_info->st_mode & S_IFDIR)
 		{
-			next_dir = ft_strjoinfree(ft_strjoin(path, "/"), list->d_name);
+			next_dir = ft_strjoinfree(path[0] == '/' && !path[1] ? ft_strdup(path) : ft_strjoin(path, "/"), list->d_name);
 			printf ("%s:\n", next_dir);
 			ls(attr, next_dir);
 			ft_strdel(&next_dir);//peut leaks
