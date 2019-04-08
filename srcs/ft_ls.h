@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 16:01:05 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/07 14:46:02 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/08 15:03:50 by yberramd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,15 @@ typedef struct		s_dir
 	struct stat		*file_info;
 	struct s_dir	*next;
 }					t_dir;
+
+typedef struct		s_max
+{
+	int			links;
+	long			prp;
+	unsigned long			grp;
+	long long			size;
+	long long int	total;
+}					t_max;
 
 //single_elem.c
 char	*file_mode(char *str, int st_mode);

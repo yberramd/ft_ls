@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:51:34 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/07 16:32:01 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/08 15:03:45 by yberramd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,39 +49,103 @@ int			print_info(const char *path, int attr)
 	return (1);
 }
 
+static	long	prp_length(unsigned int nbr)
+{
+	long i;
+
+	i = 0;
+	while (nbr)
+	{
+		nbr /= 10;
+		i++;
+	}
+	return (i);
+}
+
+static void	max_info(t_dir *list, t_max *max)
+{
+	max->total = 0;
+	max->links = 0;
+	max->prp = 0;
+	max->grp = 0;
+	max->size = 0;
+	while (list)
+	{
+		max->total += list->file_info->st_blocks;
+		max->links = max->links > (int)list->file_info->st_nlink
+			? max->links : (int)list->file_info->st_nlink;//Nombre de liens
+		if (getpwuid(list->file_info->st_uid) != NULL)
+			max->prp = ft_strlen(getpwuid(list->file_info->st_uid)->pw_name)
+				? max->prp : ft_strlen(getpwuid(list->file_info->st_uid)->pw_name);
+		else
+			max->prp = max->prp > prp_length(list->file_info->st_uid)
+				? max->prp : prp_length(list->file_info->st_uid);
+		max->grp = max->grp > ft_strlen(getgrgid(list->file_info->st_gid)->gr_name)
+			? max->grp : ft_strlen(getgrgid(list->file_info->st_gid)->gr_name);
+		max->size = max->size > list->file_info->st_size
+			? max->size : list->file_info->st_size;//Taille
+		list = list->next;
+	}
+}
+
+static int	ft_index(long nbr)
+{
+	long	y;
+	long	i;
+
+	i = 0;
+	y = 1;
+	while (nbr - y >= 0)
+	{
+		y *= 10;
+		i++;
+	}
+	return (i);
+}
+
 int			print_info_list(int attr, t_dir *list)
 {
-	char			modes[10] = "----------";
-	long long int	total;
-	t_dir			*tmp;
+	char	modes[10] = "----------";
+	t_max	max;
+	long	biggest;
+	long	lower;
 
-	tmp = list;
-	total = 0;
 	if (attr & ARG_l)
 	{
+		max_info(list, &max);
+		printf("total %lld\n", max.total);//Nombre de liens
 		while (list)
 		{
-			total += list->file_info->st_blocks;
-	//		printf("  %d", tmp->file_info->st_nlink);//Nombre de liens
-	//		printf(" %s", getpwuid(list->file_info->st_uid)->pw_name);//propriétaire
-	//		printf(" %s", getgrgid(list->file_info->st_gid)->gr_name);//Groupe
-	//		printf(" %lld", list->file_info->st_size);//Taille
-	//		printf(" %.12s ", &ctime(&list->file_info->st_mtimespec.tv_sec)[4]);//Date de la dernière modification
+			printf("%.10s", file_mode(modes, list->file_info->st_mode));//Modes
+			if ((biggest = ft_index(max.links)) > (lower = ft_index(list->file_info->st_nlink)))
+				while (lower++ < biggest)
+					printf(" ");
+			printf("  %d", list->file_info->st_nlink);//Nombre de liens
+			if (getpwuid(list->file_info->st_uid) == NULL)
+			{
+				if ((biggest = max.prp) > (lower = prp_length(list->file_info->st_uid)))
+					while (lower++ < biggest)
+						printf(" ");
+				printf(" %ld", (long)list->file_info->st_uid);
+			}
+			else
+			{
+				if ((biggest = max.prp) > (lower = ft_strlen(getpwuid(list->file_info->st_uid)->pw_name)))
+					while (lower++ < biggest)
+						printf(" ");
+				printf(" %s", getpwuid(list->file_info->st_uid)->pw_name);//propriétaire
+			}
+			if ((biggest = max.grp) > (lower = ft_strlen(getgrgid(list->file_info->st_gid)->gr_name)))
+				while (lower++ < biggest)
+					printf(" ");
+			printf("  %s", getgrgid(list->file_info->st_gid)->gr_name);//Groupe
+			if ((biggest = ft_index(max.size)) > (lower = ft_index(list->file_info->st_size)))
+				while (lower++ < biggest)
+					printf(" ");
+			printf("  %lld", list->file_info->st_size);//Taille
+			printf(" %.12s ", &ctime(&list->file_info->st_mtimespec.tv_sec)[4]);//Date de la dernière modification PB: ls -l sur Documents "2018"
+			printf("%s\n", list->d_name);//Nom
 			list = list->next;
-		}
-		printf("total %lld\n", total);//Nombre de liens
-		while (tmp)
-		{
-			printf("%.10s", file_mode(modes, tmp->file_info->st_mode));//Modes
-			printf("  %d", tmp->file_info->st_nlink);//Nombre de liens
-			getpwuid(tmp->file_info->st_uid) == NULL
-			? printf(" %ld", (long)tmp->file_info->st_uid)
-			: printf(" %s", getpwuid(tmp->file_info->st_uid)->pw_name);//propriétaire
-			printf("  %s", getgrgid(tmp->file_info->st_gid)->gr_name);//Groupe
-			printf("  %lld", tmp->file_info->st_size);//Taille
-			printf(" %.12s ", &ctime(&tmp->file_info->st_mtimespec.tv_sec)[4]);//Date de la dernière modification PB: ls -l sur Documents "2018"
-			printf("%s\n", tmp->d_name);//Nom
-			tmp = tmp->next;
 		}
 	}
 	else
