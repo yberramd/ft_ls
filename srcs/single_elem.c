@@ -6,12 +6,14 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:51:34 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/08 15:29:11 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/10 13:11:15 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 #include "../libft/libft.h"
+
+// etrange : ls -l /Library/Application\ Support/CrashReporter
 
 char		*file_mode(char *str, int st_mode)
 {
@@ -25,10 +27,11 @@ char		*file_mode(char *str, int st_mode)
 	str[7] = st_mode & S_IROTH ? 'r' : '-';
 	str[8] = st_mode & S_IWOTH ? 'w' : '-';
 	str[9] = st_mode & S_IXOTH ? 'x' : '-';
+	str[9] = st_mode & S_ISVTX ? 't' : str[9];
 	return (str);
 }
 
-int			print_info(const char *path, int attr)
+int			print_info(const char *path, int attr, time_t t)
 {
 	struct stat file_info;
 	char modes[10] = "----------";
@@ -44,7 +47,11 @@ int			print_info(const char *path, int attr)
 		printf(" %s", getpwuid(file_info.st_uid)->pw_name);//propriétaire
 		printf("  %s", getgrgid(file_info.st_gid)->gr_name);//Groupe
 		printf("  %lld", file_info.st_size);//Taille
-		printf(" %.12s ", &ctime(&file_info.st_mtimespec.tv_sec)[4]);//Date de la dernière modification
+		//printf(" %.12s ", &ctime(&file_info.st_mtimespec.tv_sec)[4]);//Date de la dernière modification
+			if (t - file_info.st_mtimespec.tv_sec < 15724800 && t - file_info.st_mtimespec.tv_sec > 0)
+				printf(" %.12s ", &ctime(&file_info.st_mtimespec.tv_sec)[4]);//Date de la dernière modification PB: ls -l sur Documents "2018"
+			else
+				printf(" %.7s %.4s ", &ctime(&file_info.st_mtimespec.tv_sec)[4], &ctime(&file_info.st_mtimespec.tv_sec)[20]);//Date de la dernière modification PB: ls -l sur Documents "2018"
 	}
 	printf("%s\n", path);//Nom
 	//	printf("Type: \n");
@@ -105,7 +112,7 @@ static int	ft_index(long nbr)
 	return (i);
 }
 
-int			print_info_list(int attr, t_dir *list)
+int			print_info_list(int attr, t_dir *list, time_t t)
 {
 	char	modes[10] = "----------";
 	t_max	max;
@@ -145,7 +152,10 @@ int			print_info_list(int attr, t_dir *list)
 				while (lower++ < biggest)
 					printf(" ");
 			printf("  %lld", list->file_info->st_size);//Taille
-			printf(" %.12s ", &ctime(&list->file_info->st_mtimespec.tv_sec)[4]);//Date de la dernière modification PB: ls -l sur Documents "2018"
+			if (t - list->file_info->st_mtimespec.tv_sec < 15724800 && t - list->file_info->st_mtimespec.tv_sec > 0)
+				printf(" %.12s ", &ctime(&list->file_info->st_mtimespec.tv_sec)[4]);//Date de la dernière modification PB: ls -l sur Documents "2018"
+			else
+				printf(" %.7s %.4s ", &ctime(&list->file_info->st_mtimespec.tv_sec)[4], &ctime(&list->file_info->st_mtimespec.tv_sec)[20]);//Date de la dernière modification PB: ls -l sur Documents "2018"
 			printf("%s\n", list->d_name);//Nom
 			list = list->next;
 		}

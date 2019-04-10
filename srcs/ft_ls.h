@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 16:01:05 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/08 15:08:57 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/10 10:57:18 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,18 +51,17 @@ typedef struct		s_max
 
 //single_elem.c
 char	*file_mode(char *str, int st_mode);
-int		print_info(const char *path, int attr);
-int		print_info_list(int attr, t_dir *list);
+int		print_info(const char *path, int attr, time_t t);
+int		print_info_list(int attr, t_dir *list, time_t t);
 
 //sort.c
 int		cmp(int attr, t_dir *elem1, t_dir *elem2);
 int		sort(int attr, t_dir *list);
 
 //ls.c
-t_dir *create_list(int attr, t_dir *first, t_dir *previous, DIR *dir);
-int ls(int attr, const char *path);
+t_dir	*create_list(int attr, t_dir *first, t_dir *previous, DIR *dir);
 void	show_list(t_dir *list); //DEBUG.
 int		stat_my_list(const char *path, t_dir *list); //Requires libft
-int		ls(int attr, const char *path);
+int		ls(int attr, const char *path, time_t t);
 int		main(int argc, char **argv); // Pourquoi y a un main dans mon .h ?
 #endif

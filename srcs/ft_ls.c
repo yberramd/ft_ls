@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:43:25 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/08 13:46:47 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/10 11:20:33 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,14 @@ int		stat_my_list(const char *path, t_dir *list) //
 	return (!i);
 }
 
-int ls(int attr, const char *path)
+int ls(int attr, const char *path, time_t t)
 {
 	DIR		*dir;
 	t_dir	*list;
 	char	*next_dir;
 
 	if (!(dir = opendir(path)))
-		return(print_info(path, attr));
+		return(print_info(path, attr, t));
 	list = create_list(attr, NULL, NULL, dir);
 	closedir(dir);
 	if (!stat_my_list(path, list))
@@ -79,14 +79,14 @@ int ls(int attr, const char *path)
 	if (list)
 		while (sort(attr, list))
 			(void)list;
-	print_info_list(attr, list);
+	print_info_list(attr, list, t);
 	while (list && attr & ARG_R)
 	{
 		if (list->file_info->st_mode & S_IFDIR)
 		{
 			next_dir = ft_strjoinfree(path[0] == '/' && !path[1] ? ft_strdup(path) : ft_strjoin(path, "/"), ft_strdup(list->d_name)); //LA FETE DU LEAK JTE DIS
-			printf ("\n%s:\n", next_dir);
-			ls(attr, next_dir);
+			printf("\n%s:\n", next_dir);
+			ls(attr, next_dir, t);
 			ft_strdel(&next_dir);//LEAKS ?
 		}
 		list = list->next;
@@ -100,14 +100,16 @@ int main(int argc, char **argv)
 	int i;
 	int j;
 	int args;
+	time_t t;
 
 	i = 0;
 	args = 0;
+	time(&t);
 	while (++i < argc && argv[i][0] == '-' && !(j = 0))
 		while(argv[i][++j])
 			args = args | ARGS(argv[i][j]);
 	if (i == argc)
-		return (ls(args, "."));
+		return (ls(args, ".", t));
 	while (i < argc)
-		ls(args, argv[i++]);
+		ls(args, argv[i++], t);
 }
