@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 16:01:05 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/10 10:57:18 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/10 13:35:04 by yberramd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,11 @@ typedef struct		s_dir
 
 typedef struct		s_max
 {
-	int			links;
-	long			prp;
+	int						links;
+	unsigned long			prp;
 	unsigned long			grp;
-	long long			size;
-	long long int	total;
+	long long				size;
+	long long int			total;
 }					t_max;
 
 //single_elem.c

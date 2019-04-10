@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:51:34 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/10 13:11:15 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/10 13:35:00 by yberramd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int			print_info(const char *path, int attr, time_t t)
 	return (1);
 }
 
-static	long	prp_length(unsigned int nbr)
+static	unsigned long	prp_length(unsigned int nbr)
 {
 	long i;
 
@@ -84,7 +84,7 @@ static void	max_info(t_dir *list, t_max *max)
 		max->links = max->links > (int)list->file_info->st_nlink
 			? max->links : (int)list->file_info->st_nlink;//Nombre de liens
 		if (getpwuid(list->file_info->st_uid) != NULL)
-			max->prp = ft_strlen(getpwuid(list->file_info->st_uid)->pw_name)
+			max->prp = max->prp > ft_strlen(getpwuid(list->file_info->st_uid)->pw_name)
 				? max->prp : ft_strlen(getpwuid(list->file_info->st_uid)->pw_name);
 		else
 			max->prp = max->prp > prp_length(list->file_info->st_uid)
@@ -122,7 +122,8 @@ int			print_info_list(int attr, t_dir *list, time_t t)
 	if (attr & ARG_l)
 	{
 		max_info(list, &max);
-		printf("total %lld\n", max.total);//Nombre de liens
+		if (list)
+			printf("total %lld\n", max.total);//Nombre de liens
 		while (list)
 		{
 			printf("%.10s", file_mode(modes, list->file_info->st_mode));//Modes
@@ -132,17 +133,17 @@ int			print_info_list(int attr, t_dir *list, time_t t)
 			printf("  %d", list->file_info->st_nlink);//Nombre de liens
 			if (getpwuid(list->file_info->st_uid) == NULL)
 			{
+				printf(" %ld", (long)list->file_info->st_uid);
 				if ((biggest = max.prp) > (lower = prp_length(list->file_info->st_uid)))
 					while (lower++ < biggest)
 						printf(" ");
-				printf(" %ld", (long)list->file_info->st_uid);
 			}
 			else
 			{
+				printf(" %s", getpwuid(list->file_info->st_uid)->pw_name);//propriétaire
 				if ((biggest = max.prp) > (lower = ft_strlen(getpwuid(list->file_info->st_uid)->pw_name)))
 					while (lower++ < biggest)
 						printf(" ");
-				printf(" %s", getpwuid(list->file_info->st_uid)->pw_name);//propriétaire
 			}
 			printf("  %s", getgrgid(list->file_info->st_gid)->gr_name);//Groupe
 			if ((biggest = max.grp) > (lower = ft_strlen(getgrgid(list->file_info->st_gid)->gr_name)))
