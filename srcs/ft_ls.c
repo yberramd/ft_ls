@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:43:25 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/10 11:20:33 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/11 13:50:52 by yberramd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,6 @@
 #include "../libft/libft.h"
 
 
-//ls -l "total nb" [CHECK]
-//-R [CHECK]
-//recherche liens symboliques, lstat et pourquoi ./ft_ls -l /etc segfault [CHECK]
-//gestion d'erreurs, debug
 //ft_ls ne gere pas les arguments invalides (exemple ./ft_ls -x)
 //ft_ls ne gere pas les path invalides (exemple ./ft_ls )
 
