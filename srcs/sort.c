@@ -6,41 +6,41 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 16:05:26 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/08 11:50:56 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/11 14:24:34 by yberramd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-int cmp(int attr, t_dir *elem1, t_dir *elem2)
+int	cmp(int attr, t_dir *elem1, t_dir *elem2)
 {
-	int i;
+	int	i;
 
 	i = 0;
-
 	// le -r n'est pas encore parfait.
 	// en cas d'egalite, le mien n'inverse pas les valeurs egales, alors que ls -r oui.
 	// que faire ? on fait l'inversion a l'affichage ?
 	// ce serait chiant de faire une liste a double sens pour ca quand meme...
-
 	if (attr & ARG_t && attr & ARG_r)
-		return(elem1->file_info->st_mtimespec.tv_sec >
-			elem2->file_info->st_mtimespec.tv_sec);
+		return (elem1->file_info->st_mtimespec.tv_sec >
+				elem2->file_info->st_mtimespec.tv_sec);
 	if (attr & ARG_t)
-		return(elem1->file_info->st_mtimespec.tv_sec <
-			elem2->file_info->st_mtimespec.tv_sec);
+		return (elem1->file_info->st_mtimespec.tv_sec <
+				elem2->file_info->st_mtimespec.tv_sec);
 	while (elem1->d_name[i] == elem2->d_name[i])
 		++i;
 	i = elem1->d_name[i] > elem2->d_name[i];
 	if (attr & ARG_r)
-		return(!i);
-	return(i);
+		return (!i);
+	return (i);
 }
 
-int sort(int attr, t_dir *list)
+int	sort(int attr, t_dir *list)
 {
 	void	*tmp;
-	int witness = 0;
+	int		witness;
+
+	witness = 0;
 	while (list->next)
 	{
 		if (cmp(attr, list, list->next))
@@ -55,5 +55,5 @@ int sort(int attr, t_dir *list)
 		}
 		list = list->next;
 	}
-	return(witness);
+	return (witness);
 }

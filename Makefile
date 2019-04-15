@@ -6,7 +6,7 @@
 #    By: yberramd <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/11 16:45:12 by yberramd          #+#    #+#              #
-#    Updated: 2019/04/05 11:36:36 by yberramd         ###   ########.fr        #
+#    Updated: 2019/04/11 13:54:44 by yberramd         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,11 +23,12 @@ LIBFT = libft/
 COMPILE = $(CC) $(CFLAGS) $(SRCS)
 
 LIB = libft/*.c		\
-		   libft/libft.h
+	  libft/libft.h
 
-SRCS = srcs/ft_ls.c			\
-	   srcs/sort.c			\
-	   srcs/single_elem.c	\
+SRCS = srcs/ft_ls.c					\
+	   srcs/sort.c					\
+	   srcs/single_elem.c			\
+	   srcs/additional_functions.c
 
 all : $(NAME)
 
