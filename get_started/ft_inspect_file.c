@@ -6,15 +6,18 @@
 /*   By: yberramd <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 16:33:07 by yberramd          #+#    #+#             */
-/*   Updated: 2019/04/15 16:33:15 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/16 15:38:07 by yberramd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/stat.h>
+#include <unistd.h>
 #include <pwd.h>
 #include <grp.h>
 #include <time.h>
 #include <stdio.h>
+
+#define BUFF_SIZE 100
 
 void print_stat(struct stat *file_info)
 {
@@ -66,14 +69,17 @@ char *file_mode(char *str, int st_mode)
 int main(int argc, char **argv)
 {
 	/*Declaration des variables requises (man 2 stat)*/
-	struct stat file_info;
+	struct stat	file_info;
 
 	/*Autres variables*/
-	char modes[10] = "----------";
+	size_t		bufsize;
+	char		buffer[BUFF_SIZE];
+	char		modes[10] = "----------";
 	/*Gestion d'erreurs. stat renvoie NULL en cas d'errreur*/
 	if (argc != 2 || stat(argv[1], &file_info))
 		return (0);
 	print_stat(&file_info);
+	bufsize = readlink(argv[1], buffer, BUFF_SIZE);
 
 	printf("\033[0;32m");
 	printf("Nom: %s\n", argv[1]); 
@@ -85,5 +91,7 @@ int main(int argc, char **argv)
 	printf("Taille: %lld octets\n", file_info.st_size);
 	printf("Date de derniere modification: %.12s\n\n\n", 
 			&ctime(&file_info.st_mtimespec.tv_sec)[4]);
+	printf("Link: %s\n", buffer);
+	printf("Link: %ld\n", bufsize);
 	printf("\033[0m");
 }

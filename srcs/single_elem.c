@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:51:34 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/11 13:48:48 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/16 16:05:58 by yberramd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,12 @@ static void				max_info(t_dir *list, t_max *max)
 	}
 }
 
-static void				ft_arg_l(t_dir *list, time_t t, t_max max, char *modes)
+static void				ft_arg_l(t_dir *list, time_t t, t_max max, char *modes,
+		const char *path)
 {
+	char	buffer[40];
+	size_t	bufsize;
+
 	printf("%.10s", file_mode(modes, list->file_info->st_mode));
 	space(ft_index(max.links), ft_index(list->file_info->st_nlink));
 	printf("  %d", list->file_info->st_nlink);
@@ -110,10 +114,17 @@ static void				ft_arg_l(t_dir *list, time_t t, t_max max, char *modes)
 	else
 		printf(" %.7s %.4s ", &ctime(&list->file_info->st_mtimespec.tv_sec)[4],
 				&ctime(&list->file_info->st_mtimespec.tv_sec)[20]);
-	printf("%s\n", list->d_name);
+	if ((bufsize = readlink(ft_strjoin(ft_strjoin(path, "/"), list->d_name), buffer, 40)) != (size_t)-1)//LEAKS IL FAUT UN STRJOINFREE
+	{
+		printf("%s", list->d_name);
+		buffer[bufsize] = '\0';
+		printf(" -> %s\n", buffer);
+	}
+	else
+		printf("%s\n", list->d_name);
 }
 
-int						print_info_list(int attr, t_dir *list, time_t t)
+int						print_info_list(const char *path, int attr, t_dir *list, time_t t)
 {
 	t_max	max;
 	char	modes[11];
@@ -126,7 +137,7 @@ int						print_info_list(int attr, t_dir *list, time_t t)
 			printf("total %lld\n", max.total);
 		while (list)
 		{
-			ft_arg_l(list, t, max, modes);
+			ft_arg_l(list, t, max, modes, path);
 			list = list->next;
 		}
 	}

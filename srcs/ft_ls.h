@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 16:01:05 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/16 16:13:29 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/16 16:55:15 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # include <grp.h>
 # include <time.h>
 # include <stdlib.h>
+# include <unistd.h>
 
 typedef struct		s_dir
 {
@@ -51,7 +52,7 @@ typedef struct		s_max
 //single_elem.c
 char			*file_mode(char *str, int st_mode);
 int				print_info(const char *path, int attr, time_t t);
-int				print_info_list(int attr, t_dir *list, time_t t);
+int				print_info_list(const char *path, int attr, t_dir *list, time_t t);
 
 //sort.c
 int				cmp(int attr, t_dir *elem1, t_dir *elem2);

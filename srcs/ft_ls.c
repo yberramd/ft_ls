@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:43:25 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/16 16:13:45 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/16 16:55:04 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int		ls(int attr, const char *path, time_t t)
 	if (list)
 		while (sort(attr, list))
 			(void)list;
-	print_info_list(attr, list, t);
+	print_info_list(path, attr, list, t);
 	first = list;
 	while (list && attr & ARG_R)
 	{
