@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:43:25 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/16 17:42:31 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/16 18:54:12 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,9 @@ t_dir	*create_list(int attr, t_dir *first, t_dir *previous, DIR *dir)
 	return (create_list(attr, first, current, dir));
 }
 
-void		stat_my_list(const char *path, t_dir *list)
+int			stat_my_list(const char *path, t_dir *list)
 {
+	int		i;
 	char	*newpath;
 	char	*tmp;
 
@@ -50,10 +51,11 @@ void		stat_my_list(const char *path, t_dir *list)
 		tmp = ft_strjoin(path, "/");
 		newpath = ft_strjoin(tmp, list->d_name);
 		ft_strdel(&tmp);
-		lstat(newpath, list->file_info);
+		i = lstat(newpath, list->file_info);
 		ft_strdel(&newpath);
 		list = list->next;
 	}
+	return(!i);
 }
 
 void	free_my_list(t_dir *list)
@@ -82,7 +84,8 @@ int		ls(int attr, const char *path, time_t t)
 		return (print_info(path, attr, t));
 	list = create_list(attr, NULL, NULL, dir);
 	closedir(dir);
-	stat_my_list(path, list);
+	if (!stat_my_list(path, list))
+		return(0);
 	if (list)
 		while (sort(attr, list))
 			(void)list;
