@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:43:25 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/15 22:20:11 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/16 14:08:52 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,10 @@ int		ls(int attr, const char *path, time_t t)
 	print_info_list(attr, list, t);
 	while (list && attr & ARG_R)
 	{
-		if (list->file_info->st_mode & S_IFDIR)
+		if (list->file_info->st_mode & S_IFDIR
+			&& (!(attr & ARG_a) || 
+			(ft_strcmp(list->d_name, ".")
+			&& ft_strcmp(list->d_name, ".."))))
 		{
 			next_dir = ft_strjoinfree(path[0] == '/' && !path[1]
 /*LEAKS*/	? ft_strdup(path) : ft_strjoin(path, "/"), ft_strdup(list->d_name));
