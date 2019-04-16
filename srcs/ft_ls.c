@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:43:25 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/16 16:55:04 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/16 16:57:52 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int		ls(int attr, const char *path, time_t t)
 		}
 		list = list->next;
 	}
-	//free_my_list(first);
+	free_my_list(first);
 	return (0);
 }
 

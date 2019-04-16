@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:51:34 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/16 16:05:58 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/16 17:15:15 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,9 @@ static void				max_info(t_dir *list, t_max *max)
 	}
 }
 
-static void				ft_arg_l(t_dir *list, time_t t, t_max max, char *modes,
-		const char *path)
+static void				ft_arg_l(t_dir *list, time_t t, t_max max, char *modes, const char *path)
 {
-	char	buffer[40];
+	char	buffer[41];
 	size_t	bufsize;
 
 	printf("%.10s", file_mode(modes, list->file_info->st_mode));
@@ -114,7 +113,7 @@ static void				ft_arg_l(t_dir *list, time_t t, t_max max, char *modes,
 	else
 		printf(" %.7s %.4s ", &ctime(&list->file_info->st_mtimespec.tv_sec)[4],
 				&ctime(&list->file_info->st_mtimespec.tv_sec)[20]);
-	if ((bufsize = readlink(ft_strjoin(ft_strjoin(path, "/"), list->d_name), buffer, 40)) != (size_t)-1)//LEAKS IL FAUT UN STRJOINFREE
+	if ((bufsize = readlink(ft_strjoin(ft_strjoin(path, "/"), list->d_name), buffer, 40)) != (size_t)-1 )//LEAKS IL FAUT UN STRJOINFREE
 	{
 		printf("%s", list->d_name);
 		buffer[bufsize] = '\0';
