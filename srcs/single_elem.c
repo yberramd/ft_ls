@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:51:34 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/16 17:15:15 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/16 17:56:19 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 char					*file_mode(char *str, int st_mode)
 {
 	str[0] = st_mode & S_IFDIR ? 'd' : '-';
+	str[0] = st_mode & S_IFLNK ? 'l' : str[0];
 	str[1] = st_mode & S_IRUSR ? 'r' : '-';
 	str[2] = st_mode & S_IWUSR ? 'w' : '-';
 	str[3] = st_mode & S_IXUSR ? 'x' : '-';
@@ -87,7 +88,7 @@ static void				max_info(t_dir *list, t_max *max)
 
 static void				ft_arg_l(t_dir *list, time_t t, t_max max, char *modes, const char *path)
 {
-	char	buffer[41];
+	char	buffer[PATH_MAX + 1];
 	size_t	bufsize;
 
 	printf("%.10s", file_mode(modes, list->file_info->st_mode));
@@ -113,7 +114,7 @@ static void				ft_arg_l(t_dir *list, time_t t, t_max max, char *modes, const cha
 	else
 		printf(" %.7s %.4s ", &ctime(&list->file_info->st_mtimespec.tv_sec)[4],
 				&ctime(&list->file_info->st_mtimespec.tv_sec)[20]);
-	if ((bufsize = readlink(ft_strjoin(ft_strjoin(path, "/"), list->d_name), buffer, 40)) != (size_t)-1 )//LEAKS IL FAUT UN STRJOINFREE
+	if ((bufsize = readlink(ft_strjoin(ft_strjoin(path, "/"), list->d_name), buffer, PATH_MAX)) != (size_t)-1 )//LEAKS IL FAUT UN STRJOINFREE
 	{
 		printf("%s", list->d_name);
 		buffer[bufsize] = '\0';

@@ -6,7 +6,7 @@
 /*   By: yberramd <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 12:02:34 by yberramd          #+#    #+#             */
-/*   Updated: 2019/04/11 13:46:39 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/16 17:51:01 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int				ft_index(long nbr)
 		y *= 10;
 		i++;
 	}
-	return (i);
+	return (!nbr ? 1 : i);
 }
 
 void			space(long biggest, long lower)
