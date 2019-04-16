@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:51:34 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/16 18:11:27 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/16 18:13:48 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 char					*file_mode(char *str, int st_mode)
 {
-	str[0] = st_mode & S_IFDIR ? 'd' : '-';
+	str[0] = (st_mode & S_IFDIR) == S_IFDIR ? 'd' : str[0];
 	str[0] = (st_mode & S_IFLNK) == S_IFLNK ? 'l' : str[0];
 	str[1] = st_mode & S_IRUSR ? 'r' : '-';
 	str[2] = st_mode & S_IWUSR ? 'w' : '-';
