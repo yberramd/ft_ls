@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:43:25 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/17 11:53:02 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/17 13:29:42 by yberramd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_dir	*create_list(int attr, t_dir *first, t_dir *previous, DIR *dir)
 		if (!(attr & ARG_a) && dirent->d_name[0] == '.')
 			return (create_list(attr, first, previous, dir));
 		else if (!(current = malloc(sizeof(t_dir))))
-			exit(printf("ls: error: Can't allocate memory\n") * 0 - 1);
+			exit(ft_printf("ls: error: Can't allocate memory\n") * 0 - 1);
 	}
 	if (!dirent)
 		return (attr & ARG_r ? previous : first);
@@ -103,14 +103,13 @@ int		ls(int attr, const char *path, time_t t)
 			else
 				str = ft_strjoin(path, "/");
 			next_dir = ft_strjoin(str, list->d_name);
-			printf("\n%s:\n", next_dir);
+			ft_printf("\n%s:\n", next_dir);
 			ft_strdel(&str);
 			ls(attr, next_dir, t);
 			ft_strdel(&next_dir);
 		}
 		list = list->next;
 	}
-	printf("OK\n");
 	free_my_list(first);
 	return (0);
 }
@@ -125,11 +124,12 @@ int		main(int argc, char **argv)
 	i = 0;
 	args = 0;
 	time(&t);
+	params.buff_index = 0;
 	while (++i < argc && argv[i][0] == '-' && argv[i][1] != '-' && !(j = 0))
 		while (argv[i][++j])
 		{
 			if (!ARGS(argv[i][j]))
-				exit(printf("ls: illegal option -- %c\nusage: ls [-Ralrt] [file ...]", argv[i][j]) && 0);
+				exit(ft_printf("ls: illegal option -- %c\nusage: ls [-Ralrt] [file ...]", argv[i][j]) && 0);
 			args = args | ARGS(argv[i][j]);
 		}
 	i += (argv[i] && argv[i][1] == '-');
@@ -138,11 +138,12 @@ int		main(int argc, char **argv)
 		return (ls(args, ".", t));
 	while (i < argc - 1)
 	{
-		printf("%s:\n", argv[i]);
+		ft_printf("%s:\n", argv[i]);
 		ls(args, argv[i++], t);
-		printf("\n");
+		add_char_to_buff('\n');
 	}
 	if (!j)
-		printf("%s:\n", argv[i]);
+		ft_printf("%s:\n", argv[i]);
 	ls(args, argv[i], t);
+	empty_buff(&params);
 }

@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 16:01:05 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/16 18:54:24 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/17 11:05:35 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@
 					(c == 'l') * ARG_l)
 
 # include <sys/stat.h>
-# include <stdio.h>
 # include <dirent.h>
 # include <pwd.h>
 # include <grp.h>
@@ -33,6 +32,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <limits.h>
+# include <limits.h>
+# include "../ft_printf/includes/ft_printf.h"
 
 typedef struct		s_dir
 {
