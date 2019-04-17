@@ -6,12 +6,11 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:43:25 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/17 15:48:14 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/17 15:56:58 by yberramd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-#include "../libft/libft.h"
 
 t_dir	*create_list(int attr, t_dir *first, t_dir *prev, DIR *dir)
 {
@@ -81,7 +80,7 @@ int		ls(int attr, const char *path, time_t t)
 	char	*next_dir;
 	char	*str;
 
-	if (!(dir = opendir(path)))
+	if (!(dir = opendir(path)) || readlink(path, NULL, 0) != -1)
 		return (print_info(path, attr, t));
 	list = create_list(attr, NULL, NULL, dir);
 	closedir(dir);
