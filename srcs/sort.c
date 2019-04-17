@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 16:05:26 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/17 15:47:32 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/17 15:52:45 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,16 @@ int	cmp(int attr, t_dir *elem1, t_dir *elem2)
 	int	i;
 
 	i = 0;
-	if (attr & ARG_t && attr & ARG_r)
+	if (attr & ARG_T && attr & ARG_R)
 		return (elem1->file_info->st_mtimespec.tv_sec >
 				elem2->file_info->st_mtimespec.tv_sec);
-	if (attr & ARG_t)
+	if (attr & ARG_T)
 		return (elem1->file_info->st_mtimespec.tv_sec <
 				elem2->file_info->st_mtimespec.tv_sec);
 	while (elem1->d_name[i] == elem2->d_name[i])
 		++i;
 	i = (unsigned char)elem1->d_name[i] > (unsigned char)elem2->d_name[i];
-	if (attr & ARG_r)
+	if (attr & ARG_R)
 		return (!i);
 	return (i);
 }
