@@ -6,95 +6,21 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:43:25 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/17 15:56:58 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/17 16:28:24 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-t_dir	*create_list(int attr, t_dir *first, t_dir *prev, DIR *dir)
+void	recursive(int attr, t_dir *list, const char *path, time_t t)
 {
-	t_dir			*current;
-	struct dirent	*dirent;
-
-	if ((dirent = readdir(dir)))
-	{
-		if (!(attr & ARG_A) && dirent->d_name[0] == '.')
-			return (create_list(attr, first, prev, dir));
-		else if (!(current = malloc(sizeof(t_dir))))
-			exit(write(2, "ls: error: malloc failed\n", 25));
-	}
-	if (!dirent)
-		return (attr & ARG_R ? prev : first);
-	current->d_name = strdup(dirent->d_name);
-	current->file_info = NULL;
-	current->next = NULL;
-	if (attr & ARG_R && prev)
-		current->next = prev;
-	else if (prev)
-		prev->next = current;
-	else
-		first = current;
-	return (create_list(attr, first, current, dir));
-}
-
-int			stat_my_list(const char *path, t_dir *list)
-{
-	int		i;
-	char	*newpath;
-	char	*tmp;
-
-	while (list)
-	{
-		if (!(list->file_info = malloc(sizeof(struct stat))))
-			exit(write(2, "ls: error: malloc failed\n", 25));
-		tmp = ft_strjoin(path, "/");
-		newpath = ft_strjoin(tmp, list->d_name);
-		ft_strdel(&tmp);
-		i = lstat(newpath, list->file_info);
-		ft_strdel(&newpath);
-		list = list->next;
-	}
-	return(!i);
-}
-
-void	free_my_list(t_dir *list)
-{
-	t_dir	*next;
-	while (list)
-	{
-		next = list->next;
-		if (list->file_info)
-			free(list->file_info);
-		ft_strdel(&list->d_name);
-		free(list);
-		list = next;
-	}
-}
-
-int		ls(int attr, const char *path, time_t t)
-{
-	DIR		*dir;
-	t_dir	*list;
-	t_dir	*first;
-	char	*next_dir;
 	char	*str;
+	char	*next_dir;
 
-	if (!(dir = opendir(path)) || readlink(path, NULL, 0) != -1)
-		return (print_info(path, attr, t));
-	list = create_list(attr, NULL, NULL, dir);
-	closedir(dir);
-	if (!stat_my_list(path, list))
-		return(0);
-	if (list)
-		while (sort(attr, list))
-			(void)list;
-	print_list(path, attr, list, t);
-	first = list;
-	while (list && attr & ARG_RR)
+	while (list)
 	{
 		if (list->file_info->st_mode & S_IFDIR
-			&& (!(attr & ARG_A) || 
+			&& (!(attr & ARG_A) ||
 			(ft_strcmp(list->d_name, ".")
 			&& ft_strcmp(list->d_name, ".."))))
 		{
@@ -110,6 +36,27 @@ int		ls(int attr, const char *path, time_t t)
 		}
 		list = list->next;
 	}
+}
+
+int		ls(int attr, const char *path, time_t t)
+{
+	DIR		*dir;
+	t_dir	*list;
+	t_dir	*first;
+
+	if (!(dir = opendir(path)) || readlink(path, NULL, 0) != -1)
+		return (print_info(path, attr, t));
+	list = create_list(attr, NULL, NULL, dir);
+	closedir(dir);
+	if (!stat_my_list(path, list))
+		return (0);
+	if (list)
+		while (sort(attr, list))
+			(void)list;
+	print_list(path, attr, list, t);
+	first = list;
+	if (attr & ARG_RR)
+		recursive(attr, list, path, t);
 	free_my_list(first);
 	return (0);
 }
@@ -127,14 +74,10 @@ int		main(int argc, char **argv)
 	params.buff_index = 0;
 	while (++i < argc && argv[i][0] == '-' && argv[i][1] != '-' && !(j = 0))
 		while (argv[i][++j])
-		{
-			if (!ARGS(argv[i][j]))
+			if (!ARGS(argv[i][j]) || ((args = args | ARGS(argv[i][j])) && 0))
 				exit(error(1, &argv[i][j]));
-			args = args | ARGS(argv[i][j]);
-		}
 	i += (argv[i] && argv[i][1] == '-');
-	j = (i + 1 == argc);
-	if (i == argc)
+	if ((j = (i + 1 == argc) || 1) && i == argc)
 		return (ls(args, ".", t));
 	while (i < argc - 1)
 	{
@@ -142,8 +85,7 @@ int		main(int argc, char **argv)
 		ls(args, argv[i++], t);
 		add_char_to_buff('\n');
 	}
-	if (!j)
-		ft_printf("%s:\n", argv[i]);
+	j ? (void)j : ft_printf("%s:\n", argv[i]);
 	ls(args, argv[i], t);
 	empty_buff(&params);
 }

@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 16:01:05 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/17 15:46:05 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/17 16:20:31 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <unistd.h>
 # include <limits.h>
 # include <limits.h>
+# include "../libft/libft.h"
 # include "../ft_printf/includes/ft_printf.h"
 
 # define ARG_RR 1
@@ -55,6 +56,7 @@ int					cmp(int attr, t_dir *elem1, t_dir *elem2);
 int					sort(int attr, t_dir *list);
 t_dir				*create_list(int attr, t_dir *first, t_dir *prev, DIR *dir);
 int					stat_my_list(const char *path, t_dir *list);
+void				free_my_list(t_dir *list);
 int					ls(int attr, const char *path, time_t t);
 void				space(long biggest, long lower);
 int					ft_index(long nbr);

@@ -6,7 +6,7 @@
 #    By: yberramd <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/11 16:45:12 by yberramd          #+#    #+#              #
-#    Updated: 2019/04/17 10:56:06 by bprunevi         ###   ########.fr        #
+#    Updated: 2019/04/17 16:20:50 by bprunevi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ LIB = libft/*.c		\
 
 SRCS = srcs/ft_ls.c					\
 	   srcs/sort.c					\
+	   srcs/list.c					\
 	   srcs/single_elem.c			\
 	   srcs/additional_functions.c
 
