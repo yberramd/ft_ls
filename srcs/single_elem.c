@@ -6,12 +6,14 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:51:34 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/16 18:16:00 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/17 11:47:59 by yberramd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 #include "../libft/libft.h"
+
+// OPTI READLINK A L'AIDE DE MODES[0] = 'l'
 
 char					*file_mode(char *str, int st_mode)
 {
@@ -34,6 +36,8 @@ int						print_info(const char *path, int attr, time_t t)
 {
 	struct stat	file_info;
 	char		modes[11];
+	char		*link;
+	char		buffer[PATH_MAX];
 
 	ft_strcpy(modes, "----------");
 	if (lstat(path, &file_info))
@@ -42,7 +46,7 @@ int						print_info(const char *path, int attr, time_t t)
 		return (printf("ls: %s: Permission denied\n", path) & 0);
 	if (attr & ARG_l)
 	{
-		printf("%.10s", file_mode(modes, file_info.st_mode));
+		printf("%.10s", (link = file_mode(modes, file_info.st_mode)));
 		printf("  %d", file_info.st_nlink);
 		printf(" %s", getpwuid(file_info.st_uid)->pw_name);
 		printf("  %s", getgrgid(file_info.st_gid)->gr_name);
@@ -53,8 +57,17 @@ int						print_info(const char *path, int attr, time_t t)
 		else
 			printf(" %.7s %.4s ", &ctime(&file_info.st_mtimespec.tv_sec)[4],
 					&ctime(&file_info.st_mtimespec.tv_sec)[20]);
+		if (link[0] == 'l')
+		{
+			buffer[readlink(path, buffer, PATH_MAX)] = '\0';//A TEST!!
+			printf("%s", path);
+			printf(" -> %s\n", buffer);
+		}
+		else
+			printf("%s\n", path);
 	}
-	printf("%s\n", path);
+	else
+		printf("%s\n", path);
 	return (1);
 }
 
@@ -89,9 +102,9 @@ static void				max_info(t_dir *list, t_max *max)
 static void				ft_arg_l(t_dir *list, time_t t, t_max max, char *modes, const char *path)
 {
 	char	buffer[PATH_MAX + 1];
-	size_t	bufsize;
+	char	*link;
 
-	printf("%.10s", file_mode(modes, list->file_info->st_mode));
+	printf("%.10s", (link = file_mode(modes, list->file_info->st_mode)));
 	space(ft_index(max.links), ft_index(list->file_info->st_nlink));
 	printf("  %d", list->file_info->st_nlink);
 	if (getpwuid(list->file_info->st_uid) == NULL)
@@ -114,10 +127,10 @@ static void				ft_arg_l(t_dir *list, time_t t, t_max max, char *modes, const cha
 	else
 		printf(" %.7s %.4s ", &ctime(&list->file_info->st_mtimespec.tv_sec)[4],
 				&ctime(&list->file_info->st_mtimespec.tv_sec)[20]);
-	if ((bufsize = readlink(ft_strjoin(ft_strjoin(path, "/"), list->d_name), buffer, PATH_MAX)) != (size_t)-1 )//LEAKS IL FAUT UN STRJOINFREE
+	if (link[0] == 'l')
 	{
+		buffer[readlink(ft_strjoin(ft_strjoin(path, "/"), list->d_name), buffer, PATH_MAX)] = '\0';//LEAKS IL FAUT UN STRJOINFREE
 		printf("%s", list->d_name);
-		buffer[bufsize] = '\0';
 		printf(" -> %s\n", buffer);
 	}
 	else
