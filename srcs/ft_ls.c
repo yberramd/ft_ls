@@ -6,34 +6,34 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:43:25 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/17 14:16:24 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/17 15:43:49 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 #include "../libft/libft.h"
 
-t_dir	*create_list(int attr, t_dir *first, t_dir *previous, DIR *dir)
+t_dir	*create_list(int attr, t_dir *first, t_dir *prev, DIR *dir)
 {
 	t_dir			*current;
 	struct dirent	*dirent;
 
 	if ((dirent = readdir(dir)))
 	{
-		if (!(attr & ARG_a) && dirent->d_name[0] == '.')
-			return (create_list(attr, first, previous, dir));
+		if (!(attr & ARG_A) && dirent->d_name[0] == '.')
+			return (create_list(attr, first, prev, dir));
 		else if (!(current = malloc(sizeof(t_dir))))
 			exit(write(2, "ls: error: malloc failed\n", 25));
 	}
 	if (!dirent)
-		return (attr & ARG_r ? previous : first);
+		return (attr & ARG_R ? prev : first);
 	current->d_name = strdup(dirent->d_name);
 	current->file_info = NULL;
 	current->next = NULL;
-	if (attr & ARG_r && previous)
-		current->next = previous;
-	else if (previous)
-		previous->next = current;
+	if (attr & ARG_R && prev)
+		current->next = prev;
+	else if (prev)
+		prev->next = current;
 	else
 		first = current;
 	return (create_list(attr, first, current, dir));
@@ -90,12 +90,12 @@ int		ls(int attr, const char *path, time_t t)
 	if (list)
 		while (sort(attr, list))
 			(void)list;
-	print_info_list(path, attr, list, t);
+	print_list(path, attr, list, t);
 	first = list;
-	while (list && attr & ARG_R)
+	while (list && attr & ARG_RR)
 	{
 		if (list->file_info->st_mode & S_IFDIR
-			&& (!(attr & ARG_a) || 
+			&& (!(attr & ARG_A) || 
 			(ft_strcmp(list->d_name, ".")
 			&& ft_strcmp(list->d_name, ".."))))
 		{

@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:51:34 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/17 13:55:19 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/17 15:44:26 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int						print_info(const char *path, int attr, time_t t)
 		return (error(2, path));
 	if (file_info.st_mode & S_IFDIR)
 		return (error(3, path));
-	if (attr & ARG_l)
+	if (attr & ARG_L)
 	{
 		ft_printf("%.10s", file_mode(modes, file_info.st_mode));
 		ft_printf("  %d", file_info.st_nlink);
@@ -150,13 +150,13 @@ static void				ft_arg_l(t_dir *list, time_t t, t_max max, char *modes, const cha
 		ft_printf("%s\n", list->d_name);
 }
 
-int						print_info_list(const char *path, int attr, t_dir *list, time_t t)
+int						print_list(const char *path, int attr, t_dir *list, time_t t)
 {
 	t_max	max;
 	char	modes[11];
 
 	ft_strcpy(modes, "----------");
-	if (attr & ARG_l)
+	if (attr & ARG_L)
 	{
 		max_info(list, &max);
 		if (list)
