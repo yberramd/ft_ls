@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 16:05:26 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/11 14:24:34 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/17 14:34:41 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,6 @@ int	cmp(int attr, t_dir *elem1, t_dir *elem2)
 	int	i;
 
 	i = 0;
-	// le -r n'est pas encore parfait.
-	// en cas d'egalite, le mien n'inverse pas les valeurs egales, alors que ls -r oui.
-	// que faire ? on fait l'inversion a l'affichage ?
-	// ce serait chiant de faire une liste a double sens pour ca quand meme...
 	if (attr & ARG_t && attr & ARG_r)
 		return (elem1->file_info->st_mtimespec.tv_sec >
 				elem2->file_info->st_mtimespec.tv_sec);

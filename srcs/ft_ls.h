@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 16:01:05 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/17 11:05:35 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/17 12:29:54 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,6 @@ int				ls(int attr, const char *path, time_t t);
 void			space(long biggest, long lower);
 int				ft_index(long nbr);
 unsigned long	prp_length(unsigned int nbr);
+
+int		error(int i, const char *c);
 #endif

@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:51:34 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/17 11:09:28 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/17 13:55:19 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,32 @@ char					*file_mode(char *str, int st_mode)
 	return (str);
 }
 
+int		error(int i, const char *c)
+{
+	char *d;
+
+	write(2, "ls: ", 4);
+	if (!i)
+		write(2, "failed malloc", 14);
+	else if (i == 1)
+	{
+		write(2, "illegal option -- ", 19);
+		write(2, c, 1);
+		write(2, "\nusage: ls [-Ralrt] [file ...]\n", 31);
+	}
+	d = strrchr(c, '/');
+	if (d && *(d + 1))
+		c = d + 1;
+	if (i > 1)
+		while (*c)
+			write(2, c++, 1);
+	if (i == 2) 
+		write(2, ": No such file or directory\n", 28);
+	if (i == 3) 
+		write(2, ": Permission denied\n", 20);
+	return(0);
+}
+
 int						print_info(const char *path, int attr, time_t t)
 {
 	struct stat	file_info;
@@ -37,9 +63,9 @@ int						print_info(const char *path, int attr, time_t t)
 
 	ft_strcpy(modes, "----------");
 	if (lstat(path, &file_info))
-		return (ft_printf("ls: %s: No such file or directory\n", path) & 0);
+		return (error(2, path));
 	if (file_info.st_mode & S_IFDIR)
-		return (ft_printf("ls: %s: Permission denied\n", path) & 0);
+		return (error(3, path));
 	if (attr & ARG_l)
 	{
 		ft_printf("%.10s", file_mode(modes, file_info.st_mode));

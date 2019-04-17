@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:43:25 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/17 11:37:08 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/17 14:16:24 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_dir	*create_list(int attr, t_dir *first, t_dir *previous, DIR *dir)
 		if (!(attr & ARG_a) && dirent->d_name[0] == '.')
 			return (create_list(attr, first, previous, dir));
 		else if (!(current = malloc(sizeof(t_dir))))
-			exit(ft_printf("ls: error: Can't allocate memory\n") * 0 - 1);
+			exit(write(2, "ls: error: malloc failed\n", 25));
 	}
 	if (!dirent)
 		return (attr & ARG_r ? previous : first);
@@ -47,7 +47,8 @@ int			stat_my_list(const char *path, t_dir *list)
 
 	while (list)
 	{
-		list->file_info = malloc(sizeof(struct stat));
+		if (!(list->file_info = malloc(sizeof(struct stat))))
+			exit(write(2, "ls: error: malloc failed\n", 25));
 		tmp = ft_strjoin(path, "/");
 		newpath = ft_strjoin(tmp, list->d_name);
 		ft_strdel(&tmp);
@@ -129,7 +130,7 @@ int		main(int argc, char **argv)
 		while (argv[i][++j])
 		{
 			if (!ARGS(argv[i][j]))
-				exit(ft_printf("ls: illegal option -- %c\nusage: ls [-Ralrt] [file ...]", argv[i][j]) && 0);
+				exit(error(1, &argv[i][j]));
 			args = args | ARGS(argv[i][j]);
 		}
 	i += (argv[i] && argv[i][1] == '-');
