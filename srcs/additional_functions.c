@@ -6,7 +6,7 @@
 /*   By: yberramd <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 12:02:34 by yberramd          #+#    #+#             */
-/*   Updated: 2019/04/16 17:51:01 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/17 11:37:29 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,5 @@ int				ft_index(long nbr)
 void			space(long biggest, long lower)
 {
 	while (lower++ < biggest)
-		printf(" ");
+		add_char_to_buff(' ');
 }

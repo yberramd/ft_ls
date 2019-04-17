@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:51:34 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/16 18:16:00 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/17 11:09:28 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,24 +37,24 @@ int						print_info(const char *path, int attr, time_t t)
 
 	ft_strcpy(modes, "----------");
 	if (lstat(path, &file_info))
-		return (printf("ls: %s: No such file or directory\n", path) & 0);
+		return (ft_printf("ls: %s: No such file or directory\n", path) & 0);
 	if (file_info.st_mode & S_IFDIR)
-		return (printf("ls: %s: Permission denied\n", path) & 0);
+		return (ft_printf("ls: %s: Permission denied\n", path) & 0);
 	if (attr & ARG_l)
 	{
-		printf("%.10s", file_mode(modes, file_info.st_mode));
-		printf("  %d", file_info.st_nlink);
-		printf(" %s", getpwuid(file_info.st_uid)->pw_name);
-		printf("  %s", getgrgid(file_info.st_gid)->gr_name);
-		printf("  %lld", file_info.st_size);
+		ft_printf("%.10s", file_mode(modes, file_info.st_mode));
+		ft_printf("  %d", file_info.st_nlink);
+		ft_printf(" %s", getpwuid(file_info.st_uid)->pw_name);
+		ft_printf("  %s", getgrgid(file_info.st_gid)->gr_name);
+		ft_printf("  %lld", file_info.st_size);
 		if (t - file_info.st_mtimespec.tv_sec < 15724800
 				&& t - file_info.st_mtimespec.tv_sec > 0)
-			printf(" %.12s ", &ctime(&file_info.st_mtimespec.tv_sec)[4]);
+			ft_printf(" %.12s ", &ctime(&file_info.st_mtimespec.tv_sec)[4]);
 		else
-			printf(" %.7s %.4s ", &ctime(&file_info.st_mtimespec.tv_sec)[4],
+			ft_printf(" %.7s %.4s ", &ctime(&file_info.st_mtimespec.tv_sec)[4],
 					&ctime(&file_info.st_mtimespec.tv_sec)[20]);
 	}
-	printf("%s\n", path);
+	ft_printf("%s\n", path);
 	return (1);
 }
 
@@ -91,37 +91,37 @@ static void				ft_arg_l(t_dir *list, time_t t, t_max max, char *modes, const cha
 	char	buffer[PATH_MAX + 1];
 	size_t	bufsize;
 
-	printf("%.10s", file_mode(modes, list->file_info->st_mode));
+	ft_printf("%.10s", file_mode(modes, list->file_info->st_mode));
 	space(ft_index(max.links), ft_index(list->file_info->st_nlink));
-	printf("  %d", list->file_info->st_nlink);
+	ft_printf("  %d", list->file_info->st_nlink);
 	if (getpwuid(list->file_info->st_uid) == NULL)
 	{
-		printf(" %ld", (long)list->file_info->st_uid);
+		ft_printf(" %ld", (long)list->file_info->st_uid);
 		space(max.prp, prp_length(list->file_info->st_uid));
 	}
 	else
 	{
-		printf(" %s", getpwuid(list->file_info->st_uid)->pw_name);
+		ft_printf(" %s", getpwuid(list->file_info->st_uid)->pw_name);
 		space(max.prp, ft_strlen(getpwuid(list->file_info->st_uid)->pw_name));
 	}
-	printf("  %s", getgrgid(list->file_info->st_gid)->gr_name);
+	ft_printf("  %s", getgrgid(list->file_info->st_gid)->gr_name);
 	space(max.grp, ft_strlen(getgrgid(list->file_info->st_gid)->gr_name));
 	space(ft_index(max.size), ft_index(list->file_info->st_size));
-	printf("  %lld", list->file_info->st_size);
+	ft_printf("  %lld", list->file_info->st_size);
 	if (t - list->file_info->st_mtimespec.tv_sec < 15724800
 			&& t - list->file_info->st_mtimespec.tv_sec > 0)
-		printf(" %.12s ", &ctime(&list->file_info->st_mtimespec.tv_sec)[4]);
+		ft_printf(" %.12s ", &ctime(&list->file_info->st_mtimespec.tv_sec)[4]);
 	else
-		printf(" %.7s %.4s ", &ctime(&list->file_info->st_mtimespec.tv_sec)[4],
+		ft_printf(" %.7s %.4s ", &ctime(&list->file_info->st_mtimespec.tv_sec)[4],
 				&ctime(&list->file_info->st_mtimespec.tv_sec)[20]);
 	if ((bufsize = readlink(ft_strjoin(ft_strjoin(path, "/"), list->d_name), buffer, PATH_MAX)) != (size_t)-1 )//LEAKS IL FAUT UN STRJOINFREE
 	{
-		printf("%s", list->d_name);
+		ft_printf("%s", list->d_name);
 		buffer[bufsize] = '\0';
-		printf(" -> %s\n", buffer);
+		ft_printf(" -> %s\n", buffer);
 	}
 	else
-		printf("%s\n", list->d_name);
+		ft_printf("%s\n", list->d_name);
 }
 
 int						print_info_list(const char *path, int attr, t_dir *list, time_t t)
@@ -134,7 +134,7 @@ int						print_info_list(const char *path, int attr, t_dir *list, time_t t)
 	{
 		max_info(list, &max);
 		if (list)
-			printf("total %lld\n", max.total);
+			ft_printf("total %lld\n", max.total);
 		while (list)
 		{
 			ft_arg_l(list, t, max, modes, path);
@@ -144,7 +144,7 @@ int						print_info_list(const char *path, int attr, t_dir *list, time_t t)
 	else
 		while (list)
 		{
-			printf("%s\n", list->d_name);
+			ft_printf("%s\n", list->d_name);
 			list = list->next;
 		}
 	return (1);
