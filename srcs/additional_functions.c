@@ -6,7 +6,7 @@
 /*   By: yberramd <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 12:02:34 by yberramd          #+#    #+#             */
-/*   Updated: 2019/04/17 11:37:29 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/17 17:15:44 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,44 @@ void			space(long biggest, long lower)
 {
 	while (lower++ < biggest)
 		add_char_to_buff(' ');
+}
+
+int				error(int i, const char *c)
+{
+	char *d;
+
+	write(2, "ls: ", 4);
+	if (!i)
+		write(2, "failed malloc", 14);
+	else if (i == 1)
+	{
+		write(2, "illegal option -- ", 19);
+		write(2, c, 1);
+		write(2, "\nusage: ls [-Ralrt] [file ...]\n", 31);
+	}
+	d = strrchr(c, '/');
+	if (d && *(d + 1))
+		c = d + 1;
+	if (i > 1)
+		while (*c)
+			write(2, c++, 1);
+	if (i == 2)
+		write(2, ": No such file or directory\n", 28);
+	if (i == 3)
+		write(2, ": Permission denied\n", 20);
+	return (0);
+}
+
+void			ft_link(char c, const char *path, const char *name)
+{
+	char	buffer[PATH_MAX + 1];
+
+	if (c == 'l')
+	{
+		buffer[readlink(path, buffer, PATH_MAX)] = '\0';
+		ft_printf("%s", name);
+		ft_printf(" -> %s\n", buffer);
+	}
+	else
+		ft_printf("%s\n", name);
 }
