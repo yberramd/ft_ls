@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:51:34 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/18 10:24:52 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/18 10:43:53 by yberramd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ int				print_list(const char *path, int attr, t_dir *list, time_t t)
 {
 	t_max	max;
 	char	modes[11];
+	char	*tmp;
 
 	ft_strcpy(modes, "----------");
 	if (attr & ARG_L)
@@ -128,16 +129,14 @@ int				print_list(const char *path, int attr, t_dir *list, time_t t)
 		while (list)
 		{
 			ft_arg_l(list, t, max, modes);
-			ft_link(modes[0], ft_strjoin_free(ft_strjoin(path, "/"),
-						list->d_name, 1), list->d_name);
+			tmp = ft_strjoin_free(ft_strjoin(path, "/"), list->d_name, 1);
+			ft_link(modes[0], tmp, list->d_name);
+			ft_strdel(&tmp);
 			list = list->next;
 		}
 	}
 	else
-		while (list)
-		{
-			ft_printf("%s\n", list->d_name);
+		while (list && ft_printf("%s\n", list->d_name))
 			list = list->next;
-		}
 	return (1);
 }
