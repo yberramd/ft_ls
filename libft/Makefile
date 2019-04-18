@@ -6,7 +6,7 @@
 #    By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/12 14:10:13 by bprunevi          #+#    #+#              #
-#    Updated: 2019/04/17 10:56:58 by bprunevi         ###   ########.fr        #
+#    Updated: 2019/04/18 10:24:05 by yberramd         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -84,7 +84,8 @@ SRCS		=	ft_atoi.c			\
 				ft_lstdelone.c		\
 				ft_lstdel.c			\
 				ft_change_base.c	\
-				get_next_line.c
+				get_next_line.c		\
+				ft_strjoin_free.c
 
 OBJS		=	$(SRCS:.c=.o)
 

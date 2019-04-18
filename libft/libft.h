@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 14:45:09 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/05 11:35:28 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/18 10:22:56 by yberramd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,5 +91,6 @@ int				ft_toupper(int c);
 int				ft_strequ(char const *s1, char const *s2);
 int				ft_strnequ(char const *s1, char const *s2, size_t n);
 int				get_next_line(const int fd, char **line);
+char			*ft_strjoin_free(char *line, char *buffer, int option);
 
 #endif
