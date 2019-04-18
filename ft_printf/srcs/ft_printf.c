@@ -6,7 +6,7 @@
 /*   By: amoynet <amoynet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/08 20:45:41 by amoynet           #+#    #+#             */
-/*   Updated: 2019/04/17 15:27:25 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/18 10:22:27 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int			ft_printf(const char *format, ...)
 	i = 0;
 	b = 0;
 	params.len = 0;
+	params.buff_index = 0;
 	va_start(params.ap, format);
 	while (format[i])
 	{
@@ -36,5 +37,6 @@ int			ft_printf(const char *format, ...)
 	if (i - b)
 		add_sub_to_buff(format + b, i - b);
 	va_end(params.ap);
+	empty_buff(&params);
 	return (params.len);
 }

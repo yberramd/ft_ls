@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:43:25 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/17 16:28:24 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/18 10:23:10 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,5 +87,4 @@ int		main(int argc, char **argv)
 	}
 	j ? (void)j : ft_printf("%s:\n", argv[i]);
 	ls(args, argv[i], t);
-	empty_buff(&params);
 }
