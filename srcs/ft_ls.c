@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:43:25 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/18 10:23:10 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/19 15:02:35 by yberramd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int		ls(int attr, const char *path, time_t t)
 
 	if (!(dir = opendir(path)) || readlink(path, NULL, 0) != -1)
 		return (print_info(path, attr, t));
+	ft_printf("%s:\n", path);
 	list = create_list(attr, NULL, NULL, dir);
 	closedir(dir);
 	if (!stat_my_list(path, list))
@@ -58,7 +59,7 @@ int		ls(int attr, const char *path, time_t t)
 	if (attr & ARG_RR)
 		recursive(attr, list, path, t);
 	free_my_list(first);
-	return (0);
+	return (2);
 }
 
 int		main(int argc, char **argv)
@@ -66,6 +67,7 @@ int		main(int argc, char **argv)
 	int		i;
 	int		j;
 	int		args;
+	char	**av;
 	time_t	t;
 
 	i = 0;
@@ -79,12 +81,13 @@ int		main(int argc, char **argv)
 	i += (argv[i] && argv[i][1] == '-');
 	if ((j = (i + 1 == argc) || 1) && i == argc)
 		return (ls(args, ".", t));
+	av = sort_argv(argc, argv);
 	while (i < argc - 1)
 	{
-		ft_printf("%s:\n", argv[i]);
-		ls(args, argv[i++], t);
+		if (ls(args, av[i++], t) == 2)
+			ft_printf("\n");
 		add_char_to_buff('\n');
 	}
-	j ? (void)j : ft_printf("%s:\n", argv[i]);
-	ls(args, argv[i], t);
+	j ? (void)j : ft_printf("%s:\n", av[i]);
+	ls(args, av[i], t);
 }

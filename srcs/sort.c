@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 16:05:26 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/17 17:19:32 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/19 16:00:37 by yberramd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,67 @@ int	sort(int attr, t_dir *list)
 		list = list->next;
 	}
 	return (witness);
+}
+
+char	**sort_argv(int argc, char **argv)
+{
+	char		*tmp;
+	struct stat	file_info;
+	int			a;
+	int			j;
+	int			i;
+
+	i = 0;
+	while (i < argc)
+	{
+		a = 1;
+		while (a < argc - 1)
+		{
+			j = 0;
+			while (argv[a][j] == argv[a + 1][j])
+				++j;
+			if ((unsigned char)argv[a][j] > (unsigned char)argv[a + 1][j])
+			{
+				tmp = argv[a + 1];
+				argv[a + 1] = argv[a];
+				argv[a] = tmp;
+			}
+			a++;
+		}
+		i++;
+	}
+	i = 0;
+	while (i < argc)
+	{
+		a = 1;
+		while (a < argc - 1)
+		{
+			if ((!(opendir(argv[a + 1])) || readlink(argv[a + 1], NULL, 0) != -1)
+				&& !(!(opendir(argv[a])) || readlink(argv[a], NULL, 0) != -1))//A AMELIORER
+			{
+				tmp = argv[a + 1];
+				argv[a + 1] = argv[a];
+				argv[a] = tmp;
+			}
+			a++;
+		}
+		i++;
+	}
+	i = 0;
+	while (i < argc)
+	{
+		a = 1;
+		while (a < argc - 1)
+		{
+			if (!(lstat(argv[a], &file_info)) && lstat(argv[a + 1], &file_info))//A AMELIORER
+			{
+				tmp = argv[a + 1];
+				argv[a + 1] = argv[a];
+				argv[a] = tmp;
+			}
+			a++;
+		}
+		i++;
+	}
+	return(argv);
 }
