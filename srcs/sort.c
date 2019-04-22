@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 16:05:26 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/19 16:00:37 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/22 11:47:41 by yberramd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,14 @@ int	sort(int attr, t_dir *list)
 	return (witness);
 }
 
-char	**sort_argv(int argc, char **argv)
+
+// CEST DE LA MERDE MAIS EN ATTENDANT ON FAIT CA
+static void	ascii_argv(int argc, char **argv)
 {
-	char		*tmp;
-	struct stat	file_info;
-	int			a;
-	int			j;
-	int			i;
+	int		i;
+	int		a;
+	int		j;
+	char	*tmp;
 
 	i = 0;
 	while (i < argc)
@@ -82,7 +83,17 @@ char	**sort_argv(int argc, char **argv)
 		}
 		i++;
 	}
+}
+
+static int	dir_argv(int argc, char **argv)
+{
+	int		i;
+	int		a;
+	char	*tmp;
+	int		rtn;;
+
 	i = 0;
+	rtn = 0;
 	while (i < argc)
 	{
 		a = 1;
@@ -99,7 +110,20 @@ char	**sort_argv(int argc, char **argv)
 		}
 		i++;
 	}
+	return (rtn);
+}
+
+int			sort_argv(int argc, char **argv)
+{
+	char		*tmp;
+	struct stat	file_info;
+	int			a;
+	int			i;
+	int			rtn;
+
 	i = 0;
+	ascii_argv(argc, argv);
+	rtn = dir_argv(argc, argv);
 	while (i < argc)
 	{
 		a = 1;
@@ -115,5 +139,5 @@ char	**sort_argv(int argc, char **argv)
 		}
 		i++;
 	}
-	return(argv);
+	return (rtn);
 }

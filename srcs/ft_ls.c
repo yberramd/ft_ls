@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:43:25 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/19 15:02:35 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/22 11:36:39 by yberramd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int		ls(int attr, const char *path, time_t t)
 	t_dir	*first;
 
 	if (!(dir = opendir(path)) || readlink(path, NULL, 0) != -1)
-		return (print_info(path, attr, t));
+		return (print_info(path, attr, t));//manque 1 '\n' quand c'est le dernier fichier
 	ft_printf("%s:\n", path);
 	list = create_list(attr, NULL, NULL, dir);
 	closedir(dir);
@@ -67,8 +67,8 @@ int		main(int argc, char **argv)
 	int		i;
 	int		j;
 	int		args;
-	char	**av;
 	time_t	t;
+	int		w;
 
 	i = 0;
 	args = 0;
@@ -81,13 +81,10 @@ int		main(int argc, char **argv)
 	i += (argv[i] && argv[i][1] == '-');
 	if ((j = (i + 1 == argc) || 1) && i == argc)
 		return (ls(args, ".", t));
-	av = sort_argv(argc, argv);
+	w = sort_argv(argc, argv);//LEAKS
 	while (i < argc - 1)
-	{
-		if (ls(args, av[i++], t) == 2)
+		if (ls(args, argv[i++], t) == 2)
 			ft_printf("\n");
-		add_char_to_buff('\n');
-	}
-	j ? (void)j : ft_printf("%s:\n", av[i]);
-	ls(args, av[i], t);
+	j ? (void)j : ft_printf("%s:\n", argv[i]);
+	ls(args, argv[i], t);
 }
