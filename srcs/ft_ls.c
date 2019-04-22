@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:43:25 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/22 11:36:39 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/22 14:11:07 by yberramd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int		ls(int attr, const char *path, time_t t)
 
 	if (!(dir = opendir(path)) || readlink(path, NULL, 0) != -1)
 		return (print_info(path, attr, t));//manque 1 '\n' quand c'est le dernier fichier
-	ft_printf("%s:\n", path);
 	list = create_list(attr, NULL, NULL, dir);
 	closedir(dir);
 	if (!stat_my_list(path, list))
@@ -65,10 +64,10 @@ int		ls(int attr, const char *path, time_t t)
 int		main(int argc, char **argv)
 {
 	int		i;
+	int		w;
 	int		j;
 	int		args;
 	time_t	t;
-	int		w;
 
 	i = 0;
 	args = 0;
@@ -81,10 +80,13 @@ int		main(int argc, char **argv)
 	i += (argv[i] && argv[i][1] == '-');
 	if ((j = (i + 1 == argc) || 1) && i == argc)
 		return (ls(args, ".", t));
-	w = sort_argv(argc, argv);//LEAKS
+	ft_printf("[%d]", (w = sort_argv(argc, argv)));//LEAKS
 	while (i < argc - 1)
-		if (ls(args, argv[i++], t) == 2)
+	{
+		ft_printf("%s:\n", argv[i]);
+		ls(args, argv[i++], t);
 			ft_printf("\n");
+	}
 	j ? (void)j : ft_printf("%s:\n", argv[i]);
 	ls(args, argv[i], t);
 }
