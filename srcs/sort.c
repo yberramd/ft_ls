@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 16:05:26 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/22 11:47:41 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/22 14:52:28 by yberramd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,15 +85,13 @@ static void	ascii_argv(int argc, char **argv)
 	}
 }
 
-static int	dir_argv(int argc, char **argv)
+static void	dir_argv(int argc, char **argv)
 {
 	int		i;
 	int		a;
 	char	*tmp;
-	int		rtn;;
 
 	i = 0;
-	rtn = 0;
 	while (i < argc)
 	{
 		a = 1;
@@ -110,10 +108,9 @@ static int	dir_argv(int argc, char **argv)
 		}
 		i++;
 	}
-	return (rtn);
 }
 
-int			sort_argv(int argc, char **argv)
+int		sort_argv(int argc, char **argv)
 {
 	char		*tmp;
 	struct stat	file_info;
@@ -122,19 +119,21 @@ int			sort_argv(int argc, char **argv)
 	int			rtn;
 
 	i = 0;
+	rtn = -1;
 	ascii_argv(argc, argv);
-	rtn = dir_argv(argc, argv);
+	dir_argv(argc, argv);
 	while (i < argc)
 	{
 		a = 1;
 		while (a < argc - 1)
 		{
-			if (!(lstat(argv[a], &file_info)) && lstat(argv[a + 1], &file_info))//A AMELIORER
+			if (lstat(argv[a + 1], &file_info) && !(lstat(argv[a], &file_info)))//A AMELIORER
 			{
 				tmp = argv[a + 1];
 				argv[a + 1] = argv[a];
 				argv[a] = tmp;
 			}
+			(file_info.st_mode & S_IFDIR) == S_IFDIR ? 0 : (rtn = a);
 			a++;
 		}
 		i++;
