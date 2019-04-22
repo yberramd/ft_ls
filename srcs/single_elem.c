@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:51:34 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/22 12:00:48 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/22 16:54:30 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int				print_info(const char *path, int attr, time_t t)
 		ft_printf("  %s", getgrgid(file_info.st_gid)->gr_name);
 		ft_printf("  %lld", file_info.st_size);
 		if (t - file_info.st_mtimespec.tv_sec < 15724800
-				&& t - file_info.st_mtimespec.tv_sec > 0)
+				&& t - file_info.st_mtimespec.tv_sec >= 0)
 			ft_printf(" %.12s ", &ctime(&file_info.st_mtimespec.tv_sec)[4]);
 		else
 			ft_printf(" %.7s %.4s ", &ctime(&file_info.st_mtimespec.tv_sec)[4],
@@ -106,7 +106,7 @@ static void		ft_arg_l(t_dir *list, time_t t, t_max max, char *modes)
 	space(ft_index(max.size), ft_index(list->file_info->st_size));
 	ft_printf("  %lld", list->file_info->st_size);
 	if (t - list->file_info->st_mtimespec.tv_sec < 15724800
-			&& t - list->file_info->st_mtimespec.tv_sec > 0)
+			&& t - list->file_info->st_mtimespec.tv_sec >= 0)
 		ft_printf(" %.12s ", &ctime(&list->file_info->st_mtimespec.tv_sec)[4]);
 	else
 		ft_printf(" %.7s %.4s ",
