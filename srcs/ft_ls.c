@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:43:25 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/22 14:11:07 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/22 14:35:08 by yberramd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,13 +80,14 @@ int		main(int argc, char **argv)
 	i += (argv[i] && argv[i][1] == '-');
 	if ((j = (i + 1 == argc) || 1) && i == argc)
 		return (ls(args, ".", t));
-	ft_printf("[%d]", (w = sort_argv(argc, argv)));//LEAKS
-	while (i < argc - 1)
+	w = sort_argv(argc, argv);//LEAKS
+	ft_printf("[%d]", w);
+	while (i < argc)
 	{
-		ft_printf("%s:\n", argv[i]);
+		if (w != -1 && i > w + 1)
+			ft_printf("%s:\n", argv[i]);
 		ls(args, argv[i++], t);
+		if (w != -1 && i > w + 1 && i != argc)
 			ft_printf("\n");
 	}
-	j ? (void)j : ft_printf("%s:\n", argv[i]);
-	ls(args, argv[i], t);
 }

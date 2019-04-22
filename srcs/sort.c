@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 16:05:26 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/22 14:10:53 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/22 14:52:28 by yberramd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,9 +116,10 @@ int		sort_argv(int argc, char **argv)
 	struct stat	file_info;
 	int			a;
 	int			i;
-	int			rtn[2];
+	int			rtn;
 
 	i = 0;
+	rtn = -1;
 	ascii_argv(argc, argv);
 	dir_argv(argc, argv);
 	while (i < argc)
@@ -126,17 +127,16 @@ int		sort_argv(int argc, char **argv)
 		a = 1;
 		while (a < argc - 1)
 		{
-			if (lstat(argv[a + 1], &file_info) && !(rtn[0] = lstat(argv[a], &file_info)))//A AMELIORER
+			if (lstat(argv[a + 1], &file_info) && !(lstat(argv[a], &file_info)))//A AMELIORER
 			{
 				tmp = argv[a + 1];
 				argv[a + 1] = argv[a];
 				argv[a] = tmp;
 			}
-			if (!(rtn[0]))
-				rtn[1] = a - 1;
+			(file_info.st_mode & S_IFDIR) == S_IFDIR ? 0 : (rtn = a);
 			a++;
 		}
 		i++;
 	}
-	return (rtn[1]);
+	return (rtn);
 }
