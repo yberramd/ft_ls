@@ -6,7 +6,7 @@
 /*   By: yberramd <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 12:02:34 by yberramd          #+#    #+#             */
-/*   Updated: 2019/04/23 14:31:54 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/23 14:51:33 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int				error(int i, const char *c)
 		write(2, "illegal option -- ", 19);
 		write(2, c, 1);
 		write(2, "\nusage: ls [-Ralrt] [file ...]\n", 31);
+		return (1);
 	}
 	d = ft_strrchr(c, '/');
 	if (d && *(d + 1))
