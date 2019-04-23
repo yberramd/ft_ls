@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 16:05:26 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/23 15:07:03 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/23 18:29:17 by yberramd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,22 @@ int		sort(int attr, t_dir *list)
 		list = list->next;
 	}
 	return (witness);
+}
+
+int		swap_argv(int argc, char **argv)
+{
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	argc--;
+	while (i < argc)
+	{
+		tmp = argv[i];
+		argv[i] = argv[argc];
+		argv[argc] = tmp;
+		i++;
+		argc--;
+	}
+	return (1);
 }
