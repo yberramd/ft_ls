@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:43:25 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/23 14:59:10 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/23 15:32:38 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,38 +61,43 @@ int		ls(int attr, const char *path, time_t t)
 	return (2);
 }
 
-int		main(int argc, char **argv)
+void	print_multiple_args(int argc, char **argv, int attr, time_t t)
 {
-	int		i;
-	int		w;
-	int		j;
-	int		args;
-	time_t	t;
+	int i;
+	int j;
 
-	i = 0;
-	args = 0;
-	time(&t);
-	params.buff_index = 0;
-	while (++i < argc && argv[i][0] == '-' && argv[i][1] != '-' && !(j = 0))
-		while (argv[i][++j])
-			if (!ARGS(argv[i][j]) || ((args = args | ARGS(argv[i][j])) && 0))
-				exit(error(1, &argv[i][j]));
-	i += (argv[i] && argv[i][1] == '-');
-	if ((j = (i + 1 == argc) || 1) && i == argc)
-		return (ls(args, ".", t));
-	argc -= i;
-	argv = &argv[i];
 	i = 0;
 	sort_argv(argc, argv, cmpname);
 	sort_argv(argc, argv, cmperr);
 	sort_argv(argc, argv, cmpdir);
-	w = first_folder(argc, argv);
+	j = first_folder(argc, argv);
 	while (i < argc)
 	{
-		if (i >= w && w != -1 && argc > 1)
+		if (i >= j && j != -1 && argc > 1)
 			ft_printf("%s:\n", argv[i]);
-		ls(args, argv[i++], t);
-		if (i >= w && w != -1 && i < argc)
+		ls(attr, argv[i++], t);
+		if (i >= j && j != -1 && i < argc)
 			ft_printf("\n");
 	}
+}
+
+int		main(int argc, char **argv)
+{
+	int		i;
+	int		j;
+	int		attr;
+	time_t	t;
+
+	i = 0;
+	attr = 0;
+	time(&t);
+	params.buff_index = 0;
+	while (++i < argc && argv[i][0] == '-' && argv[i][1] != '-' && !(j = 0))
+		while (argv[i][++j])
+			if (!ARGS(argv[i][j]) || ((attr = attr | ARGS(argv[i][j])) && 0))
+				exit(error(1, &argv[i][j]));
+	i += (argv[i] && argv[i][1] == '-');
+	if ((j = (i + 1 == argc) || 1) && i == argc)
+		return (ls(attr, ".", t));
+	print_multiple_args(argc - i, &argv[i], attr, t);
 }
