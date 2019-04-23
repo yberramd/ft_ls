@@ -6,11 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 16:01:05 by bprunevi          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2019/04/23 19:25:43 by bprunevi         ###   ########.fr       */
-=======
-/*   Updated: 2019/04/23 18:12:57 by yberramd         ###   ########.fr       */
->>>>>>> ca7d6a4fadd7c488c3c02cc5740b92d56c5d1fa2
+/*   Updated: 2019/04/23 19:31:34 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +69,8 @@ int					cmpdir(char **argv, int a);
 int					cmperr(char **argv, int a);
 int					cmpt(char **argv, int a);
 int					first_folder(int argc, char **argv);
-<<<<<<< HEAD
 int					first_file(int argc, char **argv);
 t_dir				*list_from_args(char **argv, int nb_elems);
-=======
 int					swap_argv(int argc, char **argv);
->>>>>>> ca7d6a4fadd7c488c3c02cc5740b92d56c5d1fa2
 
 #endif

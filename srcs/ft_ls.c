@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:43:25 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/23 19:29:12 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/23 19:33:02 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ void	print_multiple_args(int argc, char **argv, int attr, time_t t)
 	sort_argv(argc, argv, cmpname);
 	if (attr & ARG_T)
 		sort_argv(argc, argv, cmpt);
+	if (attr & ARG_R)
+		swap_argv(argc, argv);
 	sort_argv(argc, argv, cmperr);
 	sort_argv(argc, argv, cmpdir);
 	h = first_file(argc, argv);
