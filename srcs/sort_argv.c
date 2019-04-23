@@ -6,7 +6,7 @@
 /*   By: yberramd <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 15:04:03 by yberramd          #+#    #+#             */
-/*   Updated: 2019/04/23 15:05:46 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/23 18:29:56 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,17 @@ int		cmperr(char **argv, int a)
 	return (0);
 }
 
+int		cmpt(char **argv, int a)
+{
+	struct stat file_info;
+	struct stat file_info2;
+
+	if (!lstat(argv[a + 1], &file_info2) && !lstat(argv[a], &file_info)
+			&& (file_info.st_mtimespec.tv_sec < file_info2.st_mtimespec.tv_sec))
+		return (1);
+	return (0);
+}
+
 int		sort_argv(int argc, char **argv, int f(char **argv, int a))
 {
 	char		*tmp;
@@ -75,6 +86,21 @@ int		sort_argv(int argc, char **argv, int f(char **argv, int a))
 		i++;
 	}
 	return (0);
+}
+
+int		first_file(int argc, char **argv)
+{
+	struct stat	file_info;
+	int			a;
+
+	a = 0;
+	while (a < argc)
+	{
+		if (!lstat(argv[a], &file_info))
+			return (a);
+		a++;
+	}
+	return (-1);
 }
 
 int		first_folder(int argc, char **argv)

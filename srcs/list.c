@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 16:08:52 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/18 10:26:06 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/23 19:25:43 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,31 @@ t_dir	*create_list(int attr, t_dir *first, t_dir *prev, DIR *dir)
 	else
 		first = current;
 	return (create_list(attr, first, current, dir));
+}
+
+t_dir	*list_from_args(char **argv, int nb_elems)
+{
+	t_dir		*current;
+	t_dir		*previous;
+	t_dir		*first;
+	int			i;
+
+	i = 0;
+	first = NULL;
+	while (i < nb_elems)
+	{
+		if (!(current = malloc(sizeof(t_dir))))
+			exit(write(2, "ls: error: malloc failed\n", 25)); //fonction error nan ?
+		current->d_name = ft_strdup(argv[i++]);
+		current->file_info = NULL;
+		current->next = NULL;
+		if (previous)
+			previous->next = current;
+		else
+			first = current;
+		previous = current;
+	}
+	return (first);
 }
 
 int		stat_my_list(const char *path, t_dir *list)
