@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 16:05:26 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/22 14:52:28 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/23 14:48:18 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,88 +55,86 @@ int	sort(int attr, t_dir *list)
 	return (witness);
 }
 
-
-// CEST DE LA MERDE MAIS EN ATTENDANT ON FAIT CA
-static void	ascii_argv(int argc, char **argv)
+int		cmpname(char **argv, int a)
 {
-	int		i;
-	int		a;
-	int		j;
-	char	*tmp;
+	int j;
 
-	i = 0;
-	while (i < argc)
-	{
-		a = 1;
-		while (a < argc - 1)
-		{
-			j = 0;
-			while (argv[a][j] == argv[a + 1][j])
-				++j;
-			if ((unsigned char)argv[a][j] > (unsigned char)argv[a + 1][j])
-			{
-				tmp = argv[a + 1];
-				argv[a + 1] = argv[a];
-				argv[a] = tmp;
-			}
-			a++;
-		}
-		i++;
-	}
+	j = 0;
+	while (argv[a][j] == argv[a + 1][j])
+		++j;
+	if ((unsigned char)argv[a][j] > (unsigned char)argv[a + 1][j])
+		return(1);
+	return(0);
 }
 
-static void	dir_argv(int argc, char **argv)
+int		cmpdir(char **argv, int a)
 {
-	int		i;
-	int		a;
-	char	*tmp;
+	DIR *i;
+	DIR *j;
 
-	i = 0;
-	while (i < argc)
-	{
+	i = opendir(argv[a]);
+	j = opendir(argv[a + 1]);
+	if ((!j || readlink(argv[a + 1], NULL, 0) != -1)
+		&& !(!i || readlink(argv[a], NULL, 0) != -1))
 		a = 1;
-		while (a < argc - 1)
-		{
-			if ((!(opendir(argv[a + 1])) || readlink(argv[a + 1], NULL, 0) != -1)
-				&& !(!(opendir(argv[a])) || readlink(argv[a], NULL, 0) != -1))//A AMELIORER
-			{
-				tmp = argv[a + 1];
-				argv[a + 1] = argv[a];
-				argv[a] = tmp;
-			}
-			a++;
-		}
-		i++;
-	}
+	else 
+		a = 0;
+	if (i)
+		closedir(i);
+	if (j)
+		closedir(j);
+	return(a);
 }
 
-int		sort_argv(int argc, char **argv)
+int		cmperr(char **argv, int a)
+{
+	struct stat file_info;
+
+	if (lstat(argv[a + 1], &file_info) && !(lstat(argv[a], &file_info)))
+		return(1);
+	return(0);
+}
+
+int		sort_argv(int argc, char **argv, int f(char **argv, int a))
 {
 	char		*tmp;
-	struct stat	file_info;
 	int			a;
 	int			i;
 	int			rtn;
 
 	i = 0;
 	rtn = -1;
-	ascii_argv(argc, argv);
-	dir_argv(argc, argv);
 	while (i < argc)
 	{
-		a = 1;
+		a = 0;
 		while (a < argc - 1)
 		{
-			if (lstat(argv[a + 1], &file_info) && !(lstat(argv[a], &file_info)))//A AMELIORER
+			if (f(argv, a))
 			{
 				tmp = argv[a + 1];
 				argv[a + 1] = argv[a];
 				argv[a] = tmp;
 			}
-			(file_info.st_mode & S_IFDIR) == S_IFDIR ? 0 : (rtn = a);
 			a++;
 		}
 		i++;
 	}
 	return (rtn);
+}
+
+int first_folder(int argc, char **argv)
+{
+	struct stat file_info;
+	int a;
+
+	a = 0;
+	file_info.st_mode = 0;
+	while (a < argc)
+	{
+		lstat(argv[a], &file_info);
+		if ((file_info.st_mode & S_IFDIR) == S_IFDIR)
+			return (a);
+		a++;
+	}
+	return (-1); 
 }

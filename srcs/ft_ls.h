@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 16:01:05 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/22 11:59:55 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/23 14:29:26 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,10 @@ int					ft_index(long nbr);
 unsigned long		prp_length(unsigned int nbr);
 int					error(int i, const char *c);
 void				ft_link(char c, const char *path, const char *name);
-int					sort_argv(int argc, char **argv);
+int					sort_argv(int argc, char **argv, int f(char **argv, int a));
+int					cmpname(char **argv, int a);
+int					cmpdir(char **argv, int a);
+int					cmperr(char **argv, int a);
+int					first_folder(int argc, char **argv);
 
 #endif

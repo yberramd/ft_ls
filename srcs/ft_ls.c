@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:43:25 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/22 14:35:08 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/23 14:48:18 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,14 +80,19 @@ int		main(int argc, char **argv)
 	i += (argv[i] && argv[i][1] == '-');
 	if ((j = (i + 1 == argc) || 1) && i == argc)
 		return (ls(args, ".", t));
-	w = sort_argv(argc, argv);//LEAKS
-	ft_printf("[%d]", w);
+	argc -= i;
+	argv = &argv[i];
+	i = 0;
+	sort_argv(argc, argv, cmpname);
+	sort_argv(argc, argv, cmperr);
+	sort_argv(argc, argv, cmpdir);
+	w = first_folder(argc, argv);
 	while (i < argc)
 	{
-		if (w != -1 && i > w + 1)
+		if (i >= w && w != -1 && argc > 1)
 			ft_printf("%s:\n", argv[i]);
 		ls(args, argv[i++], t);
-		if (w != -1 && i > w + 1 && i != argc)
+		if (i >= w && w != -1 && i < argc)
 			ft_printf("\n");
 	}
 }
