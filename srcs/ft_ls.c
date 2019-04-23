@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:43:25 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/23 15:32:38 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/23 18:29:04 by yberramd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ void	print_multiple_args(int argc, char **argv, int attr, time_t t)
 	int i;
 	int j;
 
+	(void)attr;
+	(void)t;
 	i = 0;
 	sort_argv(argc, argv, cmpname);
 	sort_argv(argc, argv, cmperr);

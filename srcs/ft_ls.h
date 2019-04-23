@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 16:01:05 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/23 14:29:26 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/23 18:12:57 by yberramd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,6 @@ int					cmpname(char **argv, int a);
 int					cmpdir(char **argv, int a);
 int					cmperr(char **argv, int a);
 int					first_folder(int argc, char **argv);
+int					swap_argv(int argc, char **argv);
 
 #endif
