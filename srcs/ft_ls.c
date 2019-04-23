@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:43:25 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/23 14:48:18 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/23 14:59:10 by yberramd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int		ls(int attr, const char *path, time_t t)
 	t_dir	*first;
 
 	if (!(dir = opendir(path)) || readlink(path, NULL, 0) != -1)
-		return (print_info(path, attr, t));//manque 1 '\n' quand c'est le dernier fichier
+		return (print_info(path, attr, t));
 	list = create_list(attr, NULL, NULL, dir);
 	closedir(dir);
 	if (!stat_my_list(path, list))
