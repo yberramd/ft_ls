@@ -6,7 +6,7 @@
 /*   By: yberramd <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 15:04:03 by yberramd          #+#    #+#             */
-/*   Updated: 2019/04/23 18:29:56 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/24 14:38:49 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,24 @@ int		cmpdir(char **argv, int a)
 	j = opendir(argv[a + 1]);
 	if ((!j || readlink(argv[a + 1], NULL, 0) != -1)
 		&& !(!i || readlink(argv[a], NULL, 0) != -1))
+		a = 1;
+	else
+		a = 0;
+	if (i)
+		closedir(i);
+	if (j)
+		closedir(j);
+	return (a);
+}
+
+int		cmpdirl(char **argv, int a)
+{
+	DIR *i;
+	DIR *j;
+
+	i = opendir(argv[a]);
+	j = opendir(argv[a + 1]);
+	if (!j && i)
 		a = 1;
 	else
 		a = 0;

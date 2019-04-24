@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:43:25 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/24 14:27:42 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/24 14:38:49 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,10 @@ void	print_multiple_args(int argc, char **argv, int attr, time_t t)
 	h = h == -1 ? argc : h;
 	if (attr & ARG_R)
 		swap_argv(argc - h, &argv[h]);
-	sort_argv(argc, argv, cmpdir);
+	if (attr & ARG_L)
+		sort_argv(argc, argv, cmpdir);
+	else
+		sort_argv(argc, argv, cmpdirl);
 	j = first_folder(argc, argv);
 	j = j == -1 ? argc : j;
 	while (i < h)
