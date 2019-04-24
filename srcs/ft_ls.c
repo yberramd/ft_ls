@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:43:25 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/24 13:46:50 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/24 14:27:42 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,8 @@ void	print_multiple_args(int argc, char **argv, int attr, time_t t)
 		list = list_from_args(&argv[i], j - h);
 	if (list)
 	{
-		stat_my_list(".", list);
-		print_list(".", attr, list, t, 1);
+		stat_my_list("", list);
+		print_list("", attr, list, t, 1);
 	}
 	i = j;
 	while (i < argc)

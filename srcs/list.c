@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 16:08:52 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/23 19:25:43 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/24 14:27:41 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,10 @@ int		stat_my_list(const char *path, t_dir *list)
 	{
 		if (!(list->file_info = malloc(sizeof(struct stat))))
 			exit(write(2, "ls: error: malloc failed\n", 25));
-		tmp = ft_strjoin(path, "/");
+		if (path[0])
+			tmp = ft_strjoin(path, "/");
+		else
+			tmp = ft_strdup(path);
 		newpath = ft_strjoin(tmp, list->d_name);
 		ft_strdel(&tmp);
 		i = lstat(newpath, list->file_info);
