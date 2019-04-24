@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 16:01:05 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/24 14:30:42 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/24 15:35:02 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int					sort(int attr, t_dir *list);
 t_dir				*create_list(int attr, t_dir *first, t_dir *prev, DIR *dir);
 int					stat_my_list(const char *path, t_dir *list);
 void				free_my_list(t_dir *list);
-int					ls(int attr, const char *path, time_t t);
+int					ls(int attr, const char *path, time_t t, int f);
 void				space(long biggest, long lower);
 int					ft_index(long nbr);
 unsigned long		prp_length(unsigned int nbr);
@@ -69,7 +69,7 @@ int					cmpdir(char **argv, int a);
 int					cmpdirl(char **argv, int a);
 int					cmperr(char **argv, int a);
 int					cmpt(char **argv, int a);
-int					first_folder(int argc, char **argv);
+int					first_folder(int argc, char **argv, int attr);
 int					first_file(int argc, char **argv);
 t_dir				*list_from_args(char **argv, int nb_elems);
 int					swap_argv(int argc, char **argv);

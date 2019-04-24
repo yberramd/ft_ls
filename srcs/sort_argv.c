@@ -6,7 +6,7 @@
 /*   By: yberramd <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 15:04:03 by yberramd          #+#    #+#             */
-/*   Updated: 2019/04/24 14:38:49 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/24 14:52:36 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ int		first_file(int argc, char **argv)
 	return (-1);
 }
 
-int		first_folder(int argc, char **argv)
+int		first_folder(int argc, char **argv, int attr)
 {
 	struct stat	file_info;
 	int			a;
@@ -130,7 +130,10 @@ int		first_folder(int argc, char **argv)
 	file_info.st_mode = 0;
 	while (a < argc)
 	{
-		lstat(argv[a], &file_info);
+		if (attr & ARG_L)
+			lstat(argv[a], &file_info);
+		else
+			stat(argv[a], &file_info);
 		if ((file_info.st_mode & S_IFDIR) == S_IFDIR)
 			return (a);
 		a++;
