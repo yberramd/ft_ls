@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:43:25 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/23 19:33:02 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/24 12:46:18 by yberramd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,18 +68,16 @@ void	print_multiple_args(int argc, char **argv, int attr, time_t t)
 	int h;
 	t_dir *list;
 
-	(void)attr;
-	(void)t;
 	i = 0;
 	list = NULL;
 	sort_argv(argc, argv, cmpname);
 	if (attr & ARG_T)
 		sort_argv(argc, argv, cmpt);
-	if (attr & ARG_R)
-		swap_argv(argc, argv);
 	sort_argv(argc, argv, cmperr);
-	sort_argv(argc, argv, cmpdir);
 	h = first_file(argc, argv);
+	if (attr & ARG_R)
+		swap_argv(argc - h, &argv[h]);
+	sort_argv(argc, argv, cmpdir);
 	h = h == -1 ? argc : h;
 	j = first_folder(argc, argv);
 	j = j == -1 ? argc : j;
@@ -92,24 +90,14 @@ void	print_multiple_args(int argc, char **argv, int attr, time_t t)
 		stat_my_list(".", list);
 		print_list(".", attr, list, t, 1);
 	}
-
 	i = j;
 	while (i < argc)
 	{
-		if (j > 0 || i > j)
+		if ((j > 0 || i > j) && h != i)
 			ft_printf("\n");
 		if (argc > 1)
 			ft_printf("%s:\n", argv[i]);
 		ls(attr, argv[i++], t);
-	}
-
-	while (0 && i < argc)
-	{
-		if (i >= j && j != -1 && argc > 1)
-			ft_printf("%s:\n", argv[i]);
-		ls(attr, argv[i++], t);
-		if (i >= j && j != -1 && i < argc)
-			ft_printf("\n");
 	}
 }
 
