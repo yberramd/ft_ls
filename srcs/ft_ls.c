@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:43:25 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/24 16:40:52 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/26 13:29:37 by yberramd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,15 +61,10 @@ int		ls(int attr, const char *path, time_t t, int f)
 	return (2);
 }
 
-void	print_multiple_args(int argc, char **argv, int attr, time_t t)
+int		tri_argv(int argc, char **argv, int attr)
 {
-	int i;
-	int j;
 	int h;
-	t_dir *list;
 
-	i = 0;
-	list = NULL;
 	sort_argv(argc, argv, cmpname);
 	if (attr & ARG_T)
 		sort_argv(argc, argv, cmpt);
@@ -82,17 +77,27 @@ void	print_multiple_args(int argc, char **argv, int attr, time_t t)
 		sort_argv(argc, argv, cmpdir);
 	else
 		sort_argv(argc, argv, cmpdirl);
+	return (h);
+}
+
+void	print_multiple_args(int argc, char **argv, int attr, time_t t)
+{
+	int		i;
+	int		j;
+	int		h;
+	t_dir	*list;
+
+	i = 0;
+	list = NULL;
+	h = tri_argv(argc, argv, attr);
 	j = first_folder(argc, argv, attr);
 	j = j == -1 ? argc : j;
 	while (i < h)
 		ls(attr, argv[i++], t, 0);
 	if (h != argc)
 		list = list_from_args(&argv[i], j - h);
-	if (list)
-	{
-		stat_my_list("", list);
+	if (list && stat_my_list("", list))
 		print_list("", attr, list, t, 1);
-	}
 	i = j;
 	while (i < argc)
 	{

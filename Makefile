@@ -6,7 +6,7 @@
 #    By: yberramd <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/11 16:45:12 by yberramd          #+#    #+#              #
-#    Updated: 2019/04/23 15:06:19 by yberramd         ###   ########.fr        #
+#    Updated: 2019/04/26 13:39:43 by yberramd         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -115,7 +115,8 @@ SRCS = srcs/ft_ls.c					\
 	   srcs/list.c					\
 	   srcs/single_elem.c			\
 	   srcs/additional_functions.c	\
-	   srcs/sort_argv.c
+	   srcs/sort_argv.c				\
+	   srcs/cmp.c
 
 all : $(NAME)
 

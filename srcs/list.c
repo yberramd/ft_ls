@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 16:08:52 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/24 14:27:41 by bprunevi         ###   ########.fr       */
+/*   Updated: 2019/04/26 13:14:10 by yberramd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_dir	*list_from_args(char **argv, int nb_elems)
 	while (i < nb_elems)
 	{
 		if (!(current = malloc(sizeof(t_dir))))
-			exit(write(2, "ls: error: malloc failed\n", 25)); //fonction error nan ?
+			exit(write(2, "ls: error: malloc failed\n", 25));
 		current->d_name = ft_strdup(argv[i++]);
 		current->file_info = NULL;
 		current->next = NULL;
