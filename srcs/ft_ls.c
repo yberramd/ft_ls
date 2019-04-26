@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:43:25 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/26 13:29:37 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/26 14:18:43 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int		ls(int attr, const char *path, time_t t, int f)
 	if (list)
 		while (sort(attr, list))
 			(void)list;
-	print_list(path, attr, list, t, 0);
+	print_list(path, attr, list, t);
 	first = list;
 	if (attr & ARG_RR)
 		recursive(attr, list, path, t);
@@ -97,7 +97,7 @@ void	print_multiple_args(int argc, char **argv, int attr, time_t t)
 	if (h != argc)
 		list = list_from_args(&argv[i], j - h);
 	if (list && stat_my_list("", list))
-		print_list("", attr, list, t, 1);
+		print_list("", attr + FORCE, list, t);
 	i = j;
 	while (i < argc)
 	{

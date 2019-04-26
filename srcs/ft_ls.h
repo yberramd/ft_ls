@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 16:01:05 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/26 13:12:37 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/26 14:18:44 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # define ARG_T 4
 # define ARG_A 8
 # define ARG_L 16
+# define FORCE 32
 # define ARGS_S(c)	((c == 'a') * 8 + (c == 'l') * 16)
 # define ARGS(c)	((c == 'R') + (c == 'r') * 2 + (c == 't') * 4 + ARGS_S(c))
 
@@ -51,8 +52,7 @@ typedef struct		s_max
 
 char				*file_mode(char *str, int st_mode);
 int					print_info(const char *path, int attr, time_t t);
-int					print_list(const char *path, int a, t_dir *list, time_t t,
-		int x);
+int					print_list(const char *path, int a, t_dir *list, time_t t);
 int					cmp(int attr, t_dir *elem1, t_dir *elem2);
 int					sort(int attr, t_dir *list);
 t_dir				*create_list(int attr, t_dir *first, t_dir *prev, DIR *dir);

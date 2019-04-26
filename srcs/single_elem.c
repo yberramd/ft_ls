@@ -6,7 +6,7 @@
 /*   By: bprunevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:51:34 by bprunevi          #+#    #+#             */
-/*   Updated: 2019/04/26 13:53:43 by yberramd         ###   ########.fr       */
+/*   Updated: 2019/04/26 14:19:37 by bprunevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ static void		ft_arg_l(t_dir *list, time_t t, t_max max, char *modes)
 				&ctime(&list->file_info->st_mtimespec.tv_sec)[20]);
 }
 
-int				print_list(const char *path, int attr, t_dir *list, time_t t, int x)
+int				print_list(const char *path, int attr, t_dir *list, time_t t)
 {
 	t_max	max;
 	char	modes[11];
@@ -124,7 +124,7 @@ int				print_list(const char *path, int attr, t_dir *list, time_t t, int x)
 	if (attr & ARG_L)
 	{
 		max_info(list, &max);
-		if (list && !x)
+		if (list && !(attr & FORCE))
 			ft_printf("total %lld\n", max.total);
 		while (list)
 		{
